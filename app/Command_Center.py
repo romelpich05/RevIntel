@@ -1,0 +1,212 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from utils import load_data, inject_custom_css, REVINTEL_COLORS
+
+st.set_page_config(
+    page_title="RevIntel | Command Center",
+    page_icon="🚀",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+inject_custom_css()
+
+st.title("Command Center")
+st.markdown("### Right product. Right customer. Right price. Right store.")
+
+with st.spinner("Loading Enterprise Datasets..."):
+    stores_df, products_df, customers_df, tx_prod, inventory_df, store_reviews_df = load_data()
+
+# Bug Fix: Compute absolute discount amount correctly
+# discount_pct is e.g. 0.15 for 15%.
+tx_prod['discount_amount'] = tx_prod['unit_price'] * tx_prod['quantity'] * tx_prod['discount_pct']
+
+st.sidebar.success("✅ Connected to Data Engine")
+st.sidebar.markdown("---")
+st.sidebar.markdown("**Modules**")
+st.sidebar.info("Navigate using the pages above. Adjust filters directly on the Command Center dashboard.")
+
+# Branch Selector placed directly at the top of the main page
+col_select, _ = st.columns([1, 1])
+with col_select:
+    stores_df['display_name'] = stores_df['store_id'] + " - " + stores_df['store_name'] + " (" + stores_df['location_city'] + ")"
+    store_map = dict(zip(stores_df['display_name'], stores_df['store_id']))
+    store_options = ["All Branches"] + list(stores_df['display_name'].unique())
+    selected_store_display = st.selectbox("Select Branch Location Filter", options=store_options, key="main_branch_filter")
+
+# Map selected store
+if selected_store_display != "All Branches":
+    selected_store = store_map[selected_store_display]
+else:
+    selected_store = "All Stores"
+
+# Filter data
+if selected_store != "All Stores":
+    tx_filtered = tx_prod[tx_prod['store_id'] == selected_store].copy()
+    inv_filtered = inventory_df[inventory_df['store_id'] == selected_store].copy()
+else:
+    tx_filtered = tx_prod.copy()
+    inv_filtered = inventory_df.copy()
+
+if tx_filtered.empty:
+    st.warning(f"No transaction data found for {selected_store_display}.")
+    st.stop()
+
+# --- KPI Calculations ---
+# Overall Margin
+total_revenue = tx_filtered['total_amount'].sum()
+total_cost = (tx_filtered['quantity'] * tx_filtered['cost_price']).sum()
+overall_margin_pct = ((total_revenue - total_cost) / total_revenue * 100) if total_revenue > 0 else 0
+
+# Wasted Promo Spend
+wasted_promo_spend = tx_filtered[tx_filtered['discount_pct'] > 0]['discount_amount'].sum()
+
+# Value of Current Stock
+inv_joined = pd.merge(inv_filtered, products_df, on='product_id', how='left')
+capital_tied = (inv_joined['current_stock'] * inv_joined['cost_price']).sum()
+
+st.markdown("---")
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric("Overall Margin", f"{overall_margin_pct:.1f}%", "-1.2% vs Last Year", delta_color="inverse")
+with col2:
+    st.metric("Promo Discounts Given", f"₱{wasted_promo_spend:,.0f}", "Cannibalization Risk", delta_color="inverse")
+with col3:
+    st.metric("Inventory Capital", f"₱{capital_tied:,.0f}")
+
+st.markdown("---")
+
+col_left, col_right = st.columns(2)
+
+with col_left:
+    st.subheader(
+        "🔥 Top 5 Fastest Moving Products",
+        help="This horizontal bar chart displays the top 5 products with the highest cumulative units sold. Longer bars represent higher customer demand and inventory velocity."
+    )
+    top_movers = tx_filtered.groupby('product_name')['quantity'].sum().reset_index()
+    top_movers = top_movers.sort_values('quantity', ascending=False).head(5)
+    fig_fast = px.bar(top_movers, x='quantity', y='product_name', orientation='h',
+                      color_discrete_sequence=[REVINTEL_COLORS[0]],
+                      labels={'quantity': 'Units Sold', 'product_name': 'Product'})
+    fig_fast.update_layout(yaxis={'categoryorder':'total ascending'}, plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
+    st.plotly_chart(fig_fast, use_container_width=True)
+    
+    # AI Explanation
+    if not top_movers.empty:
+        fastest_item = top_movers.iloc[0]['product_name']
+        fastest_qty = top_movers.iloc[0]['quantity']
+        st.info(f"✨ **AI Insight:** **{fastest_item}** is your primary volume driver with **{fastest_qty:,} units** sold. We recommend maintaining optimal shelf space to prevent out-of-stocks.")
+
+    st.markdown("---")
+
+    st.subheader(
+        "⚠️ Top 5 Re-stock Alerts",
+        help="Calculates 'Stock Cover' in days: Current Stock divided by Daily Sales Velocity. Shorter bars represent critical products running out of stock soonest."
+    )
+    # Calculate stock cover: current_stock / avg_daily_sales
+    days = (tx_filtered['transaction_date'].max() - tx_filtered['transaction_date'].min()).days or 1
+    sales_vel = tx_filtered.groupby('product_id')['quantity'].sum().reset_index()
+    sales_vel['avg_daily'] = sales_vel['quantity'] / days
+    
+    # Merge with inventory
+    if selected_store == "All Stores":
+        inv_agg = inv_filtered.groupby('product_id').agg({'current_stock': 'sum', 'safety_stock_level': 'sum'}).reset_index()
+    else:
+        inv_agg = inv_filtered[['product_id', 'current_stock', 'safety_stock_level']]
+        
+    stock_df = pd.merge(inv_agg, sales_vel, on='product_id', how='left').fillna({'avg_daily': 0.1})
+    stock_df = pd.merge(stock_df, products_df[['product_id', 'product_name']], on='product_id', how='left')
+    stock_df['stock_cover_days'] = stock_df['current_stock'] / stock_df['avg_daily']
+    
+    # Lowest cover
+    restock_alerts = stock_df.sort_values('stock_cover_days', ascending=True).head(5)
+    
+    fig_restock = px.bar(restock_alerts, x='stock_cover_days', y='product_name', orientation='h',
+                         color_discrete_sequence=[REVINTEL_COLORS[1]],
+                         labels={'stock_cover_days': 'Days of Stock Left', 'product_name': 'Product'})
+    fig_restock.update_layout(yaxis={'categoryorder':'total ascending'}, plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
+    st.plotly_chart(fig_restock, use_container_width=True)
+    
+    # AI Explanation
+    if not restock_alerts.empty:
+        critical_item = restock_alerts.iloc[0]['product_name']
+        critical_days = restock_alerts.iloc[0]['stock_cover_days']
+        if critical_days <= 2:
+            st.error(f"🚨 **AI Alert:** **{critical_item}** is at critical risk with only **{critical_days:.1f} days** of stock remaining. Reorder immediately.")
+        else:
+            st.warning(f"⚠️ **AI Insight:** **{critical_item}** is leading restock urgency with **{critical_days:.1f} days** of buffer. Schedule replenishment soon.")
+
+with col_right:
+    st.subheader(
+        "🐢 Top 5 Slowest Moving Products",
+        help="Highlights the 5 products with the lowest cumulative sales volume. These represent stagnant capital and candidates for bundling or markdown campaigns."
+    )
+    slow_movers = tx_filtered.groupby('product_name')['quantity'].sum().reset_index()
+    slow_movers = slow_movers.sort_values('quantity', ascending=True).head(5)
+    fig_slow = px.bar(slow_movers, x='quantity', y='product_name', orientation='h',
+                      color_discrete_sequence=[REVINTEL_COLORS[2]],
+                      labels={'quantity': 'Units Sold', 'product_name': 'Product'})
+    fig_slow.update_layout(yaxis={'categoryorder':'total descending'}, plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
+    st.plotly_chart(fig_slow, use_container_width=True)
+    
+    # AI Explanation
+    if not slow_movers.empty:
+        slowest_item = slow_movers.iloc[0]['product_name']
+        slowest_qty = slow_movers.iloc[0]['quantity']
+        st.info(f"✨ **AI Insight:** **{slowest_item}** has stalled with only **{slowest_qty:,} units** sold. Consider pairing this item with a high-velocity anchor in the Product Bundler tab.")
+
+    st.markdown("---")
+
+    st.subheader(
+        "👥 Top Customer Segments",
+        help="Visualizes the customer segment sizes clustered using K-Means. Segmentation is derived from recency of purchase, frequency, and total spend (RFM metrics)."
+    )
+    # RFM Calculation for K-Means Clustering
+    snapshot_date = tx_filtered['transaction_date'].max() + pd.Timedelta(days=1)
+    rfm = tx_filtered.groupby('customer_id').agg({
+        'transaction_date': lambda x: (snapshot_date - x.max()).days,
+        'transaction_id': 'count',
+        'total_amount': 'sum'
+    }).reset_index()
+    rfm.rename(columns={'transaction_date': 'Recency', 'transaction_id': 'Frequency', 'total_amount': 'Monetary'}, inplace=True)
+    
+    if len(rfm) >= 5:
+        scaler = StandardScaler()
+        rfm_scaled = scaler.fit_transform(rfm[['Recency', 'Frequency', 'Monetary']])
+        kmeans = KMeans(n_clusters=5, random_state=42, n_init=10)
+        rfm['Cluster'] = kmeans.fit_predict(rfm_scaled)
+        
+        # Determine segments by average monetary value
+        cluster_summary = rfm.groupby('Cluster')[['Recency', 'Frequency', 'Monetary']].mean()
+        sorted_clusters = cluster_summary.sort_values('Monetary', ascending=False).index
+        segment_names = {
+            sorted_clusters[0]: 'Champions',
+            sorted_clusters[1]: 'Loyal Customers',
+            sorted_clusters[2]: 'Recent Customers',
+            sorted_clusters[3]: 'At Risk',
+            sorted_clusters[4]: 'Hibernating'
+        }
+        rfm['Segment'] = rfm['Cluster'].map(segment_names)
+        
+        seg_counts = rfm['Segment'].value_counts().reset_index()
+        seg_counts.columns = ['Segment', 'Customer Count']
+        
+        fig_seg = px.pie(seg_counts, names='Segment', values='Customer Count', hole=0.5,
+                         color_discrete_sequence=REVINTEL_COLORS[3:8])
+        fig_seg.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
+        st.plotly_chart(fig_seg, use_container_width=True)
+        
+        # AI Explanation
+        top_segment = seg_counts.iloc[0]['Segment']
+        top_count = seg_counts.iloc[0]['Customer Count']
+        st.info(f"✨ **AI Insight:** **{top_segment}** is your largest cohort at **{top_count:,} customers**. Offering targeted loyalty campaigns to this segment is highly recommended to protect recurring revenue.")
+    else:
+        st.info("Not enough customers to perform K-Means segmentation for this selection.")
+
+with st.expander("📊 View Raw Store & Inventory Data"):
+    st.dataframe(inv_joined.head(100), use_container_width=True)

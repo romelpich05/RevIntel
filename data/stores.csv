@@ -1,0 +1,11 @@
+store_id,store_name,category,store_type,location_city,location_type,size_sqm,size_category,opening_year
+S-01,RevIntel Hypermarket - Quezon City,Hypermarket,Standalone,Quezon City,Suburban,6918.28,Large,2015
+S-02,RevIntel Supermarket - Taguig,Supermarket,Mall-based,Taguig,Suburban,2612.33,Medium,2018
+S-03,RevIntel Supermarket - Pasig,Supermarket,Standalone,Pasig,Urban,1834.82,Medium,2016
+S-04,RevIntel Supermarket - Mandaluyong,Supermarket,Mall-based,Mandaluyong,Suburban,2515.05,Medium,2023
+S-05,RevIntel Supermarket - Manila,Supermarket,Standalone,Manila,Suburban,1630.41,Medium,2021
+S-06,RevIntel Convenience - Makati,Convenience,Standalone,Makati,Urban,53.18,Small,2016
+S-07,RevIntel Convenience - Quezon City,Convenience,Standalone,Quezon City,Urban,71.86,Small,2023
+S-08,RevIntel Convenience - Taguig,Convenience,Kiosk,Taguig,Urban,110.2,Small,2023
+S-09,RevIntel Drugstore - Mandaluyong,Drugstore,Mall-based,Mandaluyong,Urban,139.77,Small,2023
+S-10,RevIntel Drugstore - Manila,Drugstore,Standalone,Manila,Urban,183.9,Small,2022

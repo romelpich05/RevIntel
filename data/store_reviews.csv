@@ -1,0 +1,351 @@
+review_id,customer_id,store_id,rating,review_text,sentiment
+R-00001,C-00630,S-09,5,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00002,C-00848,S-02,3,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00003,C-00759,S-06,3,Standard drugstore selection. Service is average.,Neutral
+R-00004,C-00034,S-09,2,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00005,C-00654,S-08,2,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00006,C-00456,S-06,3,Standard drugstore selection. Service is average.,Neutral
+R-00007,C-00470,S-08,4,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00008,C-00689,S-05,4,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00009,C-00327,S-03,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00010,C-00283,S-09,4,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00011,C-00596,S-07,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00012,C-00837,S-04,4,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00013,C-00321,S-04,4,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00014,C-00344,S-07,1,"No parking slots left, and guards were not helpful at all.",Negative
+R-00015,C-00554,S-07,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00016,C-00973,S-01,3,Clean store but some items are out of stock.,Neutral
+R-00017,C-00489,S-01,1,"Extremely narrow aisles, hard to navigate with a shopping cart.",Negative
+R-00018,C-00442,S-05,3,"Decent product variety, prices are okay.",Neutral
+R-00019,C-00606,S-05,3,Standard drugstore selection. Service is average.,Neutral
+R-00020,C-00562,S-06,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00021,C-00869,S-07,4,Standard drugstore selection. Service is average.,Neutral
+R-00022,C-00022,S-06,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00023,C-00102,S-05,2,Many items are out of stock. Very disappointed with availability.,Negative
+R-00024,C-00488,S-07,1,"AC was broken, super hot inside. Checkout was very slow.",Negative
+R-00025,C-00771,S-09,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00026,C-00540,S-08,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00027,C-00589,S-09,5,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00028,C-00506,S-01,4,Best place to get grocery items quickly. Love the layout.,Positive
+R-00029,C-00621,S-08,5,"Convenient location, plenty of parking space.",Positive
+R-00030,C-00598,S-01,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00031,C-00532,S-04,2,Many items are out of stock. Very disappointed with availability.,Negative
+R-00032,C-00651,S-01,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00033,C-00469,S-07,5,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00034,C-00146,S-02,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00035,C-00785,S-03,4,"Convenient location, plenty of parking space.",Positive
+R-00036,C-00706,S-08,5,"Convenient location, plenty of parking space.",Positive
+R-00037,C-00557,S-10,4,The membership promos are very worth it. Staff are polite.,Positive
+R-00038,C-00234,S-07,1,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00039,C-00026,S-07,3,"Staff are ok, selection is average.",Neutral
+R-00040,C-00421,S-04,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00041,C-00091,S-05,1,Many items are out of stock. Very disappointed with availability.,Negative
+R-00042,C-00045,S-10,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00043,C-00668,S-04,5,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00044,C-00365,S-02,5,Best place to get grocery items quickly. Love the layout.,Positive
+R-00045,C-00281,S-07,4,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00046,C-00076,S-03,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00047,C-00893,S-03,4,"Staff are ok, selection is average.",Neutral
+R-00048,C-00935,S-10,4,The membership promos are very worth it. Staff are polite.,Positive
+R-00049,C-00608,S-02,1,Staff were rude when I asked where to find milk. Terrible service.,Negative
+R-00050,C-00973,S-08,5,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00051,C-00951,S-04,1,"Extremely narrow aisles, hard to navigate with a shopping cart.",Negative
+R-00052,C-00041,S-10,4,"Convenient location, plenty of parking space.",Positive
+R-00053,C-00509,S-10,4,"Convenient location, plenty of parking space.",Positive
+R-00054,C-00964,S-02,2,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00055,C-00891,S-09,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00056,C-00279,S-05,5,"Convenient location, plenty of parking space.",Positive
+R-00057,C-00720,S-08,4,Best place to get grocery items quickly. Love the layout.,Positive
+R-00058,C-00594,S-09,3,Prices are slightly high compared to others but it's nearby.,Neutral
+R-00059,C-00391,S-07,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00060,C-00856,S-06,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00061,C-00421,S-08,1,"AC was broken, super hot inside. Checkout was very slow.",Negative
+R-00062,C-00008,S-05,4,The membership promos are very worth it. Staff are polite.,Positive
+R-00063,C-00777,S-09,1,Many items are out of stock. Very disappointed with availability.,Negative
+R-00064,C-00024,S-08,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00065,C-00117,S-06,5,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00066,C-00367,S-05,5,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00067,C-00490,S-03,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00068,C-00550,S-08,4,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00069,C-00079,S-04,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00070,C-00129,S-07,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00071,C-00771,S-08,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00072,C-00757,S-08,5,"Convenient location, plenty of parking space.",Positive
+R-00073,C-00959,S-09,2,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00074,C-00042,S-10,4,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00075,C-00293,S-06,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00076,C-00025,S-08,5,Best place to get grocery items quickly. Love the layout.,Positive
+R-00077,C-00998,S-06,4,"A bit crowded on weekends, but weekdays are fine.",Neutral
+R-00078,C-00054,S-04,3,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00079,C-00527,S-10,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00080,C-00927,S-03,3,"Staff are ok, selection is average.",Neutral
+R-00081,C-00344,S-01,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00082,C-00682,S-10,4,"Decent product variety, prices are okay.",Neutral
+R-00083,C-00463,S-07,4,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00084,C-00143,S-05,4,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00085,C-00826,S-10,2,Many items are out of stock. Very disappointed with availability.,Negative
+R-00086,C-00315,S-05,1,Prices are too high! Promos are misleading.,Negative
+R-00087,C-00252,S-10,4,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00088,C-00701,S-06,4,"Convenient location, plenty of parking space.",Positive
+R-00089,C-00696,S-05,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00090,C-00969,S-05,4,Standard drugstore selection. Service is average.,Neutral
+R-00091,C-00317,S-01,5,Best place to get grocery items quickly. Love the layout.,Positive
+R-00092,C-00725,S-03,3,Prices are slightly high compared to others but it's nearby.,Neutral
+R-00093,C-00002,S-06,4,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00094,C-00298,S-10,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00095,C-00396,S-02,5,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00096,C-00313,S-10,4,"Convenient location, plenty of parking space.",Positive
+R-00097,C-00736,S-01,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00098,C-00081,S-04,5,"Convenient location, plenty of parking space.",Positive
+R-00099,C-00920,S-03,4,"Staff are ok, selection is average.",Neutral
+R-00100,C-00479,S-02,3,Clean store but some items are out of stock.,Neutral
+R-00101,C-00628,S-10,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00102,C-00532,S-08,3,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00103,C-00847,S-09,4,Clean store but some items are out of stock.,Neutral
+R-00104,C-00498,S-09,4,"A bit crowded on weekends, but weekdays are fine.",Neutral
+R-00105,C-00042,S-04,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00106,C-00593,S-05,4,"Staff are ok, selection is average.",Neutral
+R-00107,C-00036,S-07,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00108,C-00114,S-09,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00109,C-00118,S-04,4,Clean enough but sometimes long lines at checkout.,Neutral
+R-00110,C-00473,S-08,4,Clean enough but sometimes long lines at checkout.,Neutral
+R-00111,C-00106,S-01,3,Clean enough but sometimes long lines at checkout.,Neutral
+R-00112,C-00335,S-05,4,Prices are slightly high compared to others but it's nearby.,Neutral
+R-00113,C-00257,S-10,4,Standard drugstore selection. Service is average.,Neutral
+R-00114,C-00237,S-09,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00115,C-00090,S-03,4,"Staff are ok, selection is average.",Neutral
+R-00116,C-00956,S-01,4,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00117,C-00132,S-10,2,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00118,C-00923,S-03,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00119,C-00224,S-08,1,Prices are too high! Promos are misleading.,Negative
+R-00120,C-00507,S-10,4,"A bit crowded on weekends, but weekdays are fine.",Neutral
+R-00121,C-00683,S-05,5,"Convenient location, plenty of parking space.",Positive
+R-00122,C-00902,S-09,4,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00123,C-00697,S-02,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00124,C-00245,S-06,5,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00125,C-00962,S-03,4,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00126,C-00199,S-06,3,Clean store but some items are out of stock.,Neutral
+R-00127,C-00933,S-10,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00128,C-00418,S-09,5,"Convenient location, plenty of parking space.",Positive
+R-00129,C-00136,S-07,4,"Decent product variety, prices are okay.",Neutral
+R-00130,C-00482,S-04,3,Clean store but some items are out of stock.,Neutral
+R-00131,C-00648,S-07,3,Prices are slightly high compared to others but it's nearby.,Neutral
+R-00132,C-00484,S-10,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00133,C-00456,S-02,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00134,C-00459,S-08,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00135,C-00299,S-02,4,Clean store but some items are out of stock.,Neutral
+R-00136,C-00655,S-02,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00137,C-00603,S-08,5,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00138,C-00925,S-02,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00139,C-00027,S-01,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00140,C-00431,S-05,2,Staff were rude when I asked where to find milk. Terrible service.,Negative
+R-00141,C-00371,S-08,4,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00142,C-00441,S-01,3,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00143,C-00506,S-03,4,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00144,C-00540,S-06,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00145,C-00260,S-07,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00146,C-00568,S-02,4,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00147,C-00150,S-09,1,Very dirty floors and messy shelves. Needs better management.,Negative
+R-00148,C-00154,S-10,1,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00149,C-00537,S-05,4,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00150,C-00552,S-04,2,Very dirty floors and messy shelves. Needs better management.,Negative
+R-00151,C-00561,S-06,4,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00152,C-00301,S-06,3,"Decent product variety, prices are okay.",Neutral
+R-00153,C-00133,S-01,3,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00154,C-00266,S-02,4,Prices are slightly high compared to others but it's nearby.,Neutral
+R-00155,C-00961,S-04,1,Super long queue times! Only two cashiers working on a busy day.,Negative
+R-00156,C-00858,S-01,2,"Extremely narrow aisles, hard to navigate with a shopping cart.",Negative
+R-00157,C-00279,S-09,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00158,C-00960,S-01,4,Prices are slightly high compared to others but it's nearby.,Neutral
+R-00159,C-00870,S-10,3,"Decent product variety, prices are okay.",Neutral
+R-00160,C-00104,S-10,5,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00161,C-00512,S-09,5,"Convenient location, plenty of parking space.",Positive
+R-00162,C-00104,S-04,3,Standard drugstore selection. Service is average.,Neutral
+R-00163,C-00984,S-07,3,Standard drugstore selection. Service is average.,Neutral
+R-00164,C-00401,S-02,1,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00165,C-00493,S-04,4,"Convenient location, plenty of parking space.",Positive
+R-00166,C-00123,S-01,5,Best place to get grocery items quickly. Love the layout.,Positive
+R-00167,C-00891,S-01,2,"AC was broken, super hot inside. Checkout was very slow.",Negative
+R-00168,C-00163,S-07,1,Many items are out of stock. Very disappointed with availability.,Negative
+R-00169,C-00319,S-01,3,Standard drugstore selection. Service is average.,Neutral
+R-00170,C-00960,S-01,2,Many items are out of stock. Very disappointed with availability.,Negative
+R-00171,C-00029,S-03,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00172,C-00901,S-02,4,Standard drugstore selection. Service is average.,Neutral
+R-00173,C-00549,S-03,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00174,C-00662,S-03,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00175,C-00427,S-03,5,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00176,C-00071,S-10,4,"Staff are ok, selection is average.",Neutral
+R-00177,C-00821,S-04,2,"AC was broken, super hot inside. Checkout was very slow.",Negative
+R-00178,C-00752,S-06,5,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00179,C-00032,S-09,5,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00180,C-00457,S-07,2,"No parking slots left, and guards were not helpful at all.",Negative
+R-00181,C-00682,S-02,1,Staff were rude when I asked where to find milk. Terrible service.,Negative
+R-00182,C-00493,S-10,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00183,C-00639,S-03,4,"Staff are ok, selection is average.",Neutral
+R-00184,C-00103,S-02,5,Best place to get grocery items quickly. Love the layout.,Positive
+R-00185,C-00560,S-08,5,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00186,C-00105,S-08,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00187,C-00048,S-05,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00188,C-00732,S-07,5,"Convenient location, plenty of parking space.",Positive
+R-00189,C-00383,S-03,5,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00190,C-00006,S-09,1,"No parking slots left, and guards were not helpful at all.",Negative
+R-00191,C-00558,S-07,5,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00192,C-00470,S-07,4,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00193,C-00911,S-01,3,Clean store but some items are out of stock.,Neutral
+R-00194,C-00364,S-08,3,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00195,C-00303,S-09,4,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00196,C-00869,S-06,1,"No parking slots left, and guards were not helpful at all.",Negative
+R-00197,C-00217,S-01,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00198,C-00965,S-09,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00199,C-00763,S-06,4,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00200,C-00008,S-03,3,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00201,C-00337,S-01,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00202,C-00544,S-01,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00203,C-00196,S-09,4,"Convenient location, plenty of parking space.",Positive
+R-00204,C-00730,S-10,5,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00205,C-00978,S-02,2,Very dirty floors and messy shelves. Needs better management.,Negative
+R-00206,C-00475,S-02,5,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00207,C-00217,S-01,2,Many items are out of stock. Very disappointed with availability.,Negative
+R-00208,C-00839,S-04,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00209,C-00728,S-03,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00210,C-00531,S-04,4,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00211,C-00274,S-10,2,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00212,C-00984,S-02,2,Staff were rude when I asked where to find milk. Terrible service.,Negative
+R-00213,C-00648,S-02,2,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00214,C-00102,S-08,1,Prices are too high! Promos are misleading.,Negative
+R-00215,C-00885,S-02,1,Very dirty floors and messy shelves. Needs better management.,Negative
+R-00216,C-00584,S-10,5,"Convenient location, plenty of parking space.",Positive
+R-00217,C-00422,S-02,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00218,C-00772,S-06,2,Very dirty floors and messy shelves. Needs better management.,Negative
+R-00219,C-00176,S-01,5,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00220,C-00751,S-01,5,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00221,C-00204,S-03,1,"AC was broken, super hot inside. Checkout was very slow.",Negative
+R-00222,C-00665,S-06,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00223,C-00438,S-10,1,"Extremely narrow aisles, hard to navigate with a shopping cart.",Negative
+R-00224,C-00056,S-04,4,"Convenient location, plenty of parking space.",Positive
+R-00225,C-00222,S-09,3,"Decent product variety, prices are okay.",Neutral
+R-00226,C-00223,S-06,4,Best place to get grocery items quickly. Love the layout.,Positive
+R-00227,C-00187,S-08,3,Clean enough but sometimes long lines at checkout.,Neutral
+R-00228,C-00817,S-09,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00229,C-00530,S-04,4,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00230,C-00211,S-01,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00231,C-00118,S-03,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00232,C-00659,S-02,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00233,C-00544,S-03,1,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00234,C-00014,S-05,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00235,C-00438,S-01,5,Best place to get grocery items quickly. Love the layout.,Positive
+R-00236,C-00170,S-02,2,"Extremely narrow aisles, hard to navigate with a shopping cart.",Negative
+R-00237,C-00364,S-06,5,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00238,C-00430,S-09,3,Clean enough but sometimes long lines at checkout.,Neutral
+R-00239,C-00726,S-02,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00240,C-00955,S-06,3,"Decent product variety, prices are okay.",Neutral
+R-00241,C-00283,S-04,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00242,C-00211,S-10,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00243,C-00702,S-03,5,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00244,C-00749,S-06,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00245,C-00821,S-05,4,Standard drugstore selection. Service is average.,Neutral
+R-00246,C-00348,S-08,1,"Extremely narrow aisles, hard to navigate with a shopping cart.",Negative
+R-00247,C-00930,S-04,4,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00248,C-00288,S-08,1,"AC was broken, super hot inside. Checkout was very slow.",Negative
+R-00249,C-00462,S-10,3,"Staff are ok, selection is average.",Neutral
+R-00250,C-00157,S-03,3,Prices are slightly high compared to others but it's nearby.,Neutral
+R-00251,C-00060,S-02,4,Standard drugstore selection. Service is average.,Neutral
+R-00252,C-00475,S-10,4,Best place to get grocery items quickly. Love the layout.,Positive
+R-00253,C-00564,S-05,4,Clean enough but sometimes long lines at checkout.,Neutral
+R-00254,C-00823,S-06,3,Standard drugstore selection. Service is average.,Neutral
+R-00255,C-00425,S-08,4,The membership promos are very worth it. Staff are polite.,Positive
+R-00256,C-00369,S-06,5,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00257,C-00362,S-02,4,Best place to get grocery items quickly. Love the layout.,Positive
+R-00258,C-00649,S-06,4,Prices are slightly high compared to others but it's nearby.,Neutral
+R-00259,C-00294,S-03,3,Standard drugstore selection. Service is average.,Neutral
+R-00260,C-00879,S-04,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00261,C-00661,S-01,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00262,C-00420,S-06,1,Prices are too high! Promos are misleading.,Negative
+R-00263,C-00402,S-10,3,Standard drugstore selection. Service is average.,Neutral
+R-00264,C-00027,S-08,4,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00265,C-00080,S-05,5,Best place to get grocery items quickly. Love the layout.,Positive
+R-00266,C-00432,S-01,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00267,C-00557,S-07,2,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00268,C-00643,S-05,4,"Convenient location, plenty of parking space.",Positive
+R-00269,C-00825,S-10,1,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00270,C-00558,S-09,3,Prices are slightly high compared to others but it's nearby.,Neutral
+R-00271,C-00940,S-03,4,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00272,C-00178,S-08,4,"Staff are ok, selection is average.",Neutral
+R-00273,C-00252,S-01,5,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00274,C-00794,S-09,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00275,C-00899,S-06,5,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00276,C-00211,S-10,3,Standard drugstore selection. Service is average.,Neutral
+R-00277,C-00087,S-07,5,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00278,C-00637,S-02,5,"Convenient location, plenty of parking space.",Positive
+R-00279,C-00005,S-02,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00280,C-00967,S-04,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00281,C-00277,S-02,4,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00282,C-00779,S-10,1,"Extremely narrow aisles, hard to navigate with a shopping cart.",Negative
+R-00283,C-00139,S-07,4,"Staff are ok, selection is average.",Neutral
+R-00284,C-00008,S-08,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00285,C-00571,S-06,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00286,C-00735,S-03,4,Clean store but some items are out of stock.,Neutral
+R-00287,C-00899,S-08,5,Best place to get grocery items quickly. Love the layout.,Positive
+R-00288,C-00791,S-06,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00289,C-00553,S-10,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00290,C-00547,S-04,4,Clean enough but sometimes long lines at checkout.,Neutral
+R-00291,C-00230,S-03,5,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00292,C-00951,S-04,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00293,C-00167,S-03,1,Staff were rude when I asked where to find milk. Terrible service.,Negative
+R-00294,C-00421,S-08,2,Had to wait 20 minutes just to get medicine. Understaffed.,Negative
+R-00295,C-00721,S-06,1,"AC was broken, super hot inside. Checkout was very slow.",Negative
+R-00296,C-00587,S-09,3,"A bit crowded on weekends, but weekdays are fine.",Neutral
+R-00297,C-00839,S-07,5,Best place to get grocery items quickly. Love the layout.,Positive
+R-00298,C-00651,S-02,4,Clean enough but sometimes long lines at checkout.,Neutral
+R-00299,C-00138,S-01,2,"Extremely narrow aisles, hard to navigate with a shopping cart.",Negative
+R-00300,C-00148,S-10,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00301,C-00992,S-06,5,"Convenient location, plenty of parking space.",Positive
+R-00302,C-00734,S-04,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00303,C-00703,S-04,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00304,C-00333,S-01,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00305,C-00494,S-10,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00306,C-00045,S-06,2,Super long queue times! Only two cashiers working on a busy day.,Negative
+R-00307,C-00719,S-04,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00308,C-00120,S-02,4,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00309,C-00090,S-02,4,"Clean aisles, safe environment, and fast checkout counters.",Positive
+R-00310,C-00788,S-09,3,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00311,C-00350,S-05,4,Standard drugstore selection. Service is average.,Neutral
+R-00312,C-00179,S-01,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00313,C-00428,S-03,4,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00314,C-00885,S-07,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00315,C-00108,S-10,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00316,C-00666,S-07,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00317,C-00540,S-07,2,Prices are too high! Promos are misleading.,Negative
+R-00318,C-00252,S-08,4,The membership promos are very worth it. Staff are polite.,Positive
+R-00319,C-00162,S-07,4,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00320,C-00231,S-08,3,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00321,C-00541,S-05,3,Standard drugstore selection. Service is average.,Neutral
+R-00322,C-00923,S-07,4,Clean enough but sometimes long lines at checkout.,Neutral
+R-00323,C-00177,S-08,4,Clean enough but sometimes long lines at checkout.,Neutral
+R-00324,C-00515,S-04,4,"Aircon is very cold, makes shopping pleasant. Great service!",Positive
+R-00325,C-00661,S-04,4,Clean enough but sometimes long lines at checkout.,Neutral
+R-00326,C-00736,S-05,4,"A bit crowded on weekends, but weekdays are fine.",Neutral
+R-00327,C-00508,S-09,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00328,C-00935,S-01,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00329,C-00812,S-07,4,Clean store but some items are out of stock.,Neutral
+R-00330,C-00742,S-08,3,Clean store but some items are out of stock.,Neutral
+R-00331,C-00487,S-09,1,"Extremely narrow aisles, hard to navigate with a shopping cart.",Negative
+R-00332,C-00543,S-10,5,The membership promos are very worth it. Staff are polite.,Positive
+R-00333,C-00143,S-07,4,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00334,C-00229,S-01,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00335,C-00551,S-01,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00336,C-00905,S-09,4,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00337,C-00116,S-03,4,Standard drugstore selection. Service is average.,Neutral
+R-00338,C-00485,S-04,5,Excellent staff and very helpful cashiers. Wide range of products.,Positive
+R-00339,C-00744,S-01,3,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00340,C-00479,S-09,5,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00341,C-00073,S-10,1,Very dirty floors and messy shelves. Needs better management.,Negative
+R-00342,C-00164,S-06,5,Always fully stocked with fresh vegetables and drinks.,Positive
+R-00343,C-00110,S-10,4,"Store is alright, though parking can be difficult during peak hours.",Neutral
+R-00344,C-00407,S-06,4,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00345,C-00567,S-04,2,"AC was broken, super hot inside. Checkout was very slow.",Negative
+R-00346,C-00640,S-10,4,"Clean store, very fast checkouts. Will shop here again!",Positive
+R-00347,C-00772,S-07,5,"Quick service, staff assisted me immediately in finding items.",Positive
+R-00348,C-00539,S-04,3,Standard shopping experience. Nothing special but gets the job done.,Neutral
+R-00349,C-00994,S-07,5,Best place to get grocery items quickly. Love the layout.,Positive
+R-00350,C-00512,S-02,4,Always fully stocked with fresh vegetables and drinks.,Positive
