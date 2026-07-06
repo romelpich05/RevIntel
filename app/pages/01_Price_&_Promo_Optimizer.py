@@ -23,16 +23,26 @@ st.sidebar.success("✅ Connected to Data Engine")
 st.sidebar.markdown("---")
 st.sidebar.info("Select filters and adjust pricing parameters directly on the page layout.")
 
-# Move selectors to the top of the main page
+# Move selectors to the top of the main page with tooltips
 col_sel1, col_sel2 = st.columns(2)
 with col_sel1:
-    selected_category = st.selectbox("Select Category", options=["All"] + list(products_df['category'].unique()), key="opt_cat")
+    selected_category = st.selectbox(
+        "Select Category", 
+        options=["All"] + list(products_df['category'].unique()), 
+        key="opt_cat",
+        help="Filter the product catalog by a major department to narrow down choices."
+    )
 with col_sel2:
     if selected_category != "All":
         filtered_products = products_df[products_df['category'] == selected_category]
     else:
         filtered_products = products_df
-    selected_product = st.selectbox("Select Product to Analyze", options=filtered_products['product_name'].unique(), key="opt_prod")
+    selected_product = st.selectbox(
+        "Select Product to Analyze", 
+        options=filtered_products['product_name'].unique(), 
+        key="opt_prod",
+        help="Choose a specific SKU to load its historical pricing and transactional records."
+    )
 
 product_info = products_df[products_df['product_name'] == selected_product].iloc[0]
 product_id = product_info['product_id']
@@ -48,8 +58,10 @@ elasticity_data = daily_sales.groupby('discount_pct')['quantity'].mean().reset_i
 
 # Prepare pricing simulation parameters first so the chart can draw the target strategy point
 st.markdown("---")
-st.subheader("📊 Interactive Price & Promo ROI Simulator")
-st.markdown("Raise the selling price or apply a discount to forecast demand and calculate profitability changes.")
+st.subheader(
+    "📊 Interactive Price & Promo ROI Simulator",
+    help="Configure custom base price adjustments and promotional discounts for a selected period. The simulator projects demand using the elasticity trendline and forecasts gross profit margins."
+)
 
 sim_col1, sim_col2, sim_col3 = st.columns(3)
 with sim_col1:
@@ -59,7 +71,7 @@ with sim_col1:
 with sim_col2:
     sim_discount = st.slider("Planned Promo Discount %", min_value=0, max_value=50, value=0, step=5, help="Discount applied to the new base price during the promotion.")
 with sim_col3:
-    sim_duration = st.number_input("Simulation Duration (Days)", min_value=1, max_value=30, value=7)
+    sim_duration = st.number_input("Simulation Duration (Days)", min_value=1, max_value=30, value=7, help="Select the length of the promotional event in days.")
 
 # Calculate base trendline parameters
 if len(elasticity_data) > 1:
@@ -144,12 +156,27 @@ with col1:
         
 with col2:
     st.markdown("### Product Baseline")
-    st.metric("Base Price", f"₱{base_price:.2f}")
-    st.metric("Cost Price", f"₱{cost_price:.2f}")
-    st.metric("Base Margin", f"{((base_price - cost_price) / base_price * 100):.1f}%")
+    st.metric(
+        "Base Price", 
+        f"₱{base_price:.2f}",
+        help="The catalog retail selling price before any overrides or promotional markdowns are calculated."
+    )
+    st.metric(
+        "Cost Price", 
+        f"₱{cost_price:.2f}",
+        help="The cost per unit to purchase or produce this item, loaded from the product dataset."
+    )
+    st.metric(
+        "Base Margin", 
+        f"{((base_price - cost_price) / base_price * 100):.1f}%",
+        help="The percentage of the retail price that represents gross profit profit margin under the base pricing structure."
+    )
 
 st.markdown("---")
-st.subheader("💰 Simulation Financial Forecast")
+st.subheader(
+    "💰 Simulation Financial Forecast",
+    help="Presents side-by-side projected outcomes for volume, revenue, and margin comparing the new strategy to the baseline."
+)
 
 # Scenario metrics
 no_change_qty = base_daily_qty * sim_duration
@@ -166,12 +193,27 @@ profit_delta = promo_profit - no_change_profit
 
 col_r1, col_r2, col_r3 = st.columns(3)
 with col_r1:
-    st.metric("Est. Total Volume", f"{promo_qty:,.0f} units", f"{promo_qty - no_change_qty:+,.0f} vs original")
+    st.metric(
+        "Est. Total Volume", 
+        f"{promo_qty:,.0f} units", 
+        f"{promo_qty - no_change_qty:+,.0f} vs original",
+        help="Projected number of units sold over the duration. Relies directly on the elasticity demand model."
+    )
 with col_r2:
-    st.metric("Est. Revenue", f"₱{promo_rev:,.2f}", f"₱{promo_rev - no_change_rev:+,.2f} vs original")
+    st.metric(
+        "Est. Revenue", 
+        f"₱{promo_rev:,.2f}", 
+        f"₱{promo_rev - no_change_rev:+,.2f} vs original",
+        help="Estimated gross sales revenue (total volume multiplied by the final discounted retail price)."
+    )
 with col_r3:
-    st.metric("Est. Gross Profit", f"₱{promo_profit:,.2f}", f"₱{profit_delta:+,.2f} vs original", 
-              delta_color="normal" if profit_delta >= 0 else "inverse")
+    st.metric(
+        "Est. Gross Profit", 
+        f"₱{promo_profit:,.2f}", 
+        f"₱{profit_delta:+,.2f} vs original", 
+        delta_color="normal" if profit_delta >= 0 else "inverse",
+        help="Estimated gross profit margin (revenue minus product cost price). A green delta represents positive revenue growth."
+    )
 
 if profit_delta < 0:
     st.error(f"⚠️ **Margin Erosion Alert!** This pricing strategy is projected to reduce gross profit by ₱{abs(profit_delta):.2f} compared to the original baseline due to suppressed demand volume.")

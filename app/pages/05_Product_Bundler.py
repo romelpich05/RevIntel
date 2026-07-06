@@ -31,9 +31,26 @@ st.sidebar.info("Adjust the parameters directly on the page layout above.")
 # Move sliders to the main page top
 col_sl1, col_sl2 = st.columns(2)
 with col_sl1:
-    min_support = st.slider("Min Support (Transaction Frequency)", min_value=0.001, max_value=0.05, value=0.005, step=0.001, format="%.3f", key="bundler_support")
+    min_support = st.slider(
+        "Min Support (Transaction Frequency)", 
+        min_value=0.001, 
+        max_value=0.05, 
+        value=0.005, 
+        step=0.001, 
+        format="%.3f", 
+        key="bundler_support",
+        help="Minimum percentage of all transactions that must contain the bundle items for it to be considered a frequent pairing."
+    )
 with col_sl2:
-    min_lift = st.slider("Min Lift (Association Strength)", min_value=1.0, max_value=5.0, value=1.1, step=0.1, key="bundler_lift")
+    min_lift = st.slider(
+        "Min Lift (Association Strength)", 
+        min_value=1.0, 
+        max_value=5.0, 
+        value=1.1, 
+        step=0.1, 
+        key="bundler_lift",
+        help="Minimum strength of association. A lift of 2.0 means the target product is bought 2 times more often when the anchor is in the basket compared to normal purchasing habits."
+    )
 
 # Prepare data for Market Basket Analysis
 basket = tx_prod.groupby(['transaction_id', 'product_name'])['quantity'].sum().unstack().reset_index().fillna(0)
@@ -113,12 +130,19 @@ with tab1:
         st.info("No strategic 'Fast -> Slow' bundles found in the current dataset. Try reducing your Support or Lift thresholds.")
 
 with tab2:
-    st.subheader("🎛️ Bundle ROI Simulator")
+    st.subheader(
+        "🎛️ Bundle ROI Simulator",
+        help="Configure a custom 2-item, 3-item, or 4-item bundle and slide the discount rate to forecast sales volume, revenue growth, and tied inventory capital recovery."
+    )
     st.markdown("Pick a slow-moving product to simulate a bundle campaign and forecast its revenue impact. You can now build 2, 3, or 4-item bundles.")
     
     # Isolate slow movers that actually have transaction records
     slow_movers = [k for k, v in velocity_map.items() if v == 'Slow']
-    selected_slow = st.selectbox("Select a Slow Moving Product to Liquidate", options=slow_movers)
+    selected_slow = st.selectbox(
+        "Select a Slow Moving Product to Liquidate", 
+        options=slow_movers,
+        help="Choose a slow-moving product SKU to target for liquidation."
+    )
     
     # Try to find associated anchor
     match_rule = strategic_bundles[strategic_bundles['consequents_str'] == selected_slow]
@@ -155,11 +179,15 @@ with tab2:
         st.info(f"🎯 **{selected_slow}**")
         
     with col_items2:
-        # Change Anchor to be an interactive Selectbox instead of static text
         fast_movers = [k for k, v in velocity_map.items() if v == 'Fast' and k != selected_slow]
         if rec_anchor not in fast_movers:
             fast_movers = [rec_anchor] + fast_movers
-        selected_anchor = st.selectbox("Anchor (Fast Mover)", options=fast_movers, index=fast_movers.index(rec_anchor) if rec_anchor in fast_movers else 0)
+        selected_anchor = st.selectbox(
+            "Anchor (Fast Mover)", 
+            options=fast_movers, 
+            index=fast_movers.index(rec_anchor) if rec_anchor in fast_movers else 0,
+            help="Choose the primary fast-moving anchor product to bind the bundle package."
+        )
         
     with col_items3:
         all_products = list(products_df['product_name'].unique())
@@ -169,7 +197,8 @@ with tab2:
             "Bundle Item 2 (Optional)", 
             options=item2_options, 
             index=item2_options.index(second_best_item) if second_best_item in item2_options else 0,
-            key="bundle_item2"
+            key="bundle_item2",
+            help="Add a third product (optional) to build a 3-item bundle package."
         )
         
     with col_items4:
@@ -179,7 +208,8 @@ with tab2:
             "Bundle Item 3 (Optional)", 
             options=item3_options, 
             index=0,
-            key="bundle_item3"
+            key="bundle_item3",
+            help="Add a fourth product (optional) to build a 4-item bundle package."
         )
 
     st.markdown("---")
@@ -187,9 +217,9 @@ with tab2:
     # Input simulation variables
     col_s1, col_s2 = st.columns(2)
     with col_s1:
-        bundle_discount = st.slider("Bundle Discount %", min_value=0, max_value=30, value=10, step=5)
+        bundle_discount = st.slider("Bundle Discount %", min_value=0, max_value=30, value=10, step=5, help="Percentage discount applied to the total combined selling price of the bundle.")
     with col_s2:
-        projected_weekly_sales = st.number_input("Anchor Baseline Weekly Sales (Units)", min_value=10, max_value=1000, value=150)
+        projected_weekly_sales = st.number_input("Anchor Baseline Weekly Sales (Units)", min_value=10, max_value=1000, value=150, help="Expected weekly volume sold of the anchor product under normal circumstances.")
         
     # Get target and anchor prices
     p_info_target = products_df[products_df['product_name'] == selected_slow].iloc[0]
@@ -254,13 +284,14 @@ with tab2:
     
     col_r1, col_r2, col_r3 = st.columns(3)
     with col_r1:
-        st.metric("Simulated Weekly Bundles Sold", f"{sim_bundles_sold:,} packs")
+        st.metric("Simulated Weekly Bundles Sold", f"{sim_bundles_sold:,} packs", help="Projected packs sold based on co-purchase confidence and promo discount modifiers.")
     with col_r2:
         st.metric("Net Profit Change", f"₱{profit_delta:,.2f}", 
                   delta="Profitable" if profit_delta >= 0 else "Unprofitable",
-                  delta_color="normal" if profit_delta >= 0 else "inverse")
+                  delta_color="normal" if profit_delta >= 0 else "inverse",
+                  help="The net difference in weekly earnings compared to selling products separately at full price.")
     with col_r3:
-        st.metric("Tied Capital Recovered", f"₱{capital_recovered:,.2f}")
+        st.metric("Tied Capital Recovered", f"₱{capital_recovered:,.2f}", help="Total cash value of slow-moving inventory liquidated through the bundle.")
         
     st.markdown("""
     * **Simulated Weekly Bundles Sold**: Estimated quantity of customer transactions containing all bundle items under the campaign (adjusted for multi-item price friction).

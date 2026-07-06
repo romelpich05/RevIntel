@@ -50,7 +50,15 @@ with tab1:
     
     col_param, _ = st.columns([1, 2])
     with col_param:
-        k_clusters = st.slider("Configure Store K-Means Clusters", min_value=2, max_value=5, value=3, step=1, key="tab1_k_clusters")
+        k_clusters = st.slider(
+            "Configure Store K-Means Clusters", 
+            min_value=2, 
+            max_value=5, 
+            value=3, 
+            step=1, 
+            key="tab1_k_clusters",
+            help="Choose the number of distinct size groupings (k) for the K-Means algorithm to partition store physical sizes."
+        )
     
     # Store K-Means size clustering
     cluster_features = stores_df[['size_sqm']].copy()
@@ -77,6 +85,7 @@ with tab1:
     
     col1, col2 = st.columns([2, 1])
     with col1:
+        st.subheader("Store Format Scatter Plot", help="Visualizes stores mapped by physical size (sqm) and grouped into formats based on K-Means.")
         fig_stores = px.scatter(stores_df, x='size_sqm', y='store_id', color='Store Format', 
                                 hover_data=['location_type', 'store_id'],
                                 title=f"Store Clustering by Size (k={k_clusters})",
@@ -125,19 +134,21 @@ with tab1:
 
 # ==================== TAB 2 ====================
 with tab2:
-    st.subheader("Buyer Profile & Demographic Indexing")
-    st.markdown("Identify target audiences by comparing the buyer demographics of the selected product against the company average.")
+    st.subheader(
+        "Buyer Profile & Demographic Indexing",
+        help="Identify target audiences by comparing the buyer demographics of the selected product against the company average."
+    )
     
     col_t2_1, col_t2_2 = st.columns(2)
     with col_t2_1:
         category_options = ["All"] + list(products_df['category'].unique())
-        selected_category = st.selectbox("Filter by Category", options=category_options, key="tab2_cat")
+        selected_category = st.selectbox("Filter by Category", options=category_options, key="tab2_cat", help="Narrow down products by department.")
     with col_t2_2:
         if selected_category != "All":
             product_options = products_df[products_df['category'] == selected_category]['product_name'].tolist()
         else:
             product_options = products_df['product_name'].tolist()
-        selected_product = st.selectbox("Select Product to Profile", options=product_options, key="tab2_prod")
+        selected_product = st.selectbox("Select Product to Profile", options=product_options, key="tab2_prod", help="Choose a specific SKU to construct its buyer persona profile.")
         
     prod_id = products_df[products_df['product_name'] == selected_product]['product_id'].values[0]
     
@@ -208,7 +219,12 @@ with tab3:
     with col_t3:
         stores_df['display_name'] = stores_df['store_id'] + " - " + stores_df['store_name'] + " (" + stores_df['location_city'] + ")"
         store_map = dict(zip(stores_df['display_name'], stores_df['store_id']))
-        selected_store_display = st.selectbox("Select Store to Analyze Location Fit", options=list(stores_df['display_name'].unique()), key="tab3_store")
+        selected_store_display = st.selectbox(
+            "Select Store to Analyze Location Fit", 
+            options=list(stores_df['display_name'].unique()), 
+            key="tab3_store",
+            help="Choose a store outlet to analyze transaction source flows, customer demographics, and sentiment reviews."
+        )
     
     selected_store_id = store_map[selected_store_display]
     selected_store_info = stores_df[stores_df['store_id'] == selected_store_id].iloc[0]
@@ -287,13 +303,13 @@ with tab3:
         
         col_m1, col_m2, col_m3 = st.columns(3)
         with col_m1:
-            st.metric("Average Rating", f"{avg_rating:.2f} / 5.0 ⭐")
+            st.metric("Average Rating", f"{avg_rating:.2f} / 5.0 ⭐", help="Average star rating left by customers for this store.")
         with col_m2:
             pos_pct = (store_reviews['sentiment'] == 'Positive').mean()
-            st.metric("Positive Sentiment", f"{pos_pct:.1%}")
+            st.metric("Positive Sentiment", f"{pos_pct:.1%}", help="Percentage of customer reviews classified as Positive.")
         with col_m3:
             neg_pct = (store_reviews['sentiment'] == 'Negative').mean()
-            st.metric("Negative Sentiment", f"{neg_pct:.1%}", delta_color="inverse")
+            st.metric("Negative Sentiment", f"{neg_pct:.1%}", delta_color="inverse", help="Percentage of customer reviews classified as Negative.")
             
         st.markdown("---")
         
@@ -315,8 +331,8 @@ with tab3:
         with col_s2:
             st.markdown("#### Customer Comments & Live Keyword Filter")
             
-            sel_sent = st.radio("Sentiment filter", ["All", "Positive", "Neutral", "Negative"], horizontal=True, key="sent_radio")
-            keyword_search = st.text_input("🔍 Search comments for keyword (e.g. checkout, AC, staff, rude):", value="", key="search_review_keyword")
+            sel_sent = st.radio("Sentiment filter", ["All", "Positive", "Neutral", "Negative"], horizontal=True, key="sent_radio", help="Filter raw comments by sentiment tag.")
+            keyword_search = st.text_input("🔍 Search comments for keyword (e.g. checkout, AC, staff, rude):", value="", key="search_review_keyword", help="Enter a search term to dynamically filter comments.")
             
             filtered_reviews = store_reviews.copy()
             if sel_sent != "All":

@@ -22,7 +22,6 @@ with st.spinner("Loading Enterprise Datasets..."):
     stores_df, products_df, customers_df, tx_prod, inventory_df, store_reviews_df = load_data()
 
 # Bug Fix: Compute absolute discount amount correctly
-# discount_pct is e.g. 0.15 for 15%.
 tx_prod['discount_amount'] = tx_prod['unit_price'] * tx_prod['quantity'] * tx_prod['discount_pct']
 
 st.sidebar.success("✅ Connected to Data Engine")
@@ -36,7 +35,12 @@ with col_select:
     stores_df['display_name'] = stores_df['store_id'] + " - " + stores_df['store_name'] + " (" + stores_df['location_city'] + ")"
     store_map = dict(zip(stores_df['display_name'], stores_df['store_id']))
     store_options = ["All Branches"] + list(stores_df['display_name'].unique())
-    selected_store_display = st.selectbox("Select Branch Location Filter", options=store_options, key="main_branch_filter")
+    selected_store_display = st.selectbox(
+        "Select Branch Location Filter", 
+        options=store_options, 
+        key="main_branch_filter",
+        help="Filter all statistics and charts in the Command Center for a specific store branch or select 'All Branches' to view aggregates across the entire retail chain."
+    )
 
 # Map selected store
 if selected_store_display != "All Branches":
@@ -73,11 +77,27 @@ st.markdown("---")
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.metric("Overall Margin", f"{overall_margin_pct:.1f}%", "-1.2% vs Last Year", delta_color="inverse")
+    st.metric(
+        "Overall Margin", 
+        f"{overall_margin_pct:.1f}%", 
+        "-1.2% vs Last Year", 
+        delta_color="inverse",
+        help="The percentage difference between gross sales revenue and total inventory cost price for all selected transactions."
+    )
 with col2:
-    st.metric("Promo Discounts Given", f"₱{wasted_promo_spend:,.0f}", "Cannibalization Risk", delta_color="inverse")
+    st.metric(
+        "Promo Discounts Given", 
+        f"₱{wasted_promo_spend:,.0f}", 
+        "Cannibalization Risk", 
+        delta_color="inverse",
+        help="Total value of markdown discounts applied to the transaction history. High numbers represent lost margin potential."
+    )
 with col3:
-    st.metric("Inventory Capital", f"₱{capital_tied:,.0f}")
+    st.metric(
+        "Inventory Capital", 
+        f"₱{capital_tied:,.0f}",
+        help="Total cost value of the current physical inventory sitting on shelves and warehouses for the selected branch filter."
+    )
 
 st.markdown("---")
 

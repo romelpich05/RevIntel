@@ -68,17 +68,27 @@ st.sidebar.success("✅ Connected to Data Engine")
 st.sidebar.markdown("---")
 st.sidebar.info("Select filters directly on the page layout above.")
 
-# Move selectors to the top of the main page
+# Move selectors to the top of the main page with tooltips
 col_sel1, col_sel2 = st.columns(2)
 with col_sel1:
     category_options = ["All"] + list(products_df['category'].unique())
-    selected_category = st.selectbox("Select Category", options=category_options, key="vel_cat")
+    selected_category = st.selectbox(
+        "Select Category", 
+        options=category_options, 
+        key="vel_cat",
+        help="Select a product category to filter the item selection dropdown."
+    )
 with col_sel2:
     if selected_category != "All":
         product_options = products_df[products_df['category'] == selected_category]['product_name'].tolist()
     else:
         product_options = products_df['product_name'].tolist()
-    selected_product = st.selectbox("Select Product", options=product_options, key="vel_prod")
+    selected_product = st.selectbox(
+        "Select Product", 
+        options=product_options, 
+        key="vel_prod",
+        help="Choose a specific product SKU to display its current inventory stats, geographical heatmap, and velocity classifications."
+    )
 
 prod_id = products_df[products_df['product_name'] == selected_product]['product_id'].values[0]
 
@@ -104,16 +114,16 @@ st.markdown("---")
 
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
-    st.metric("Actual Velocity", f"{actual_velocity:.2f} units/day")
+    st.metric("Actual Velocity", f"{actual_velocity:.2f} units/day", help="Average daily units sold for this product across all stores over the total operational period.")
 with col2:
-    st.metric("Remaining Stock (Units)", f"{remaining_stock:,} units")
+    st.metric("Remaining Stock (Units)", f"{remaining_stock:,} units", help="Total physical units currently in stock across all stores.")
 with col3:
-    st.metric("Restock Baseline (Safety Stock)", f"{restock_baseline:,} units")
+    st.metric("Restock Baseline (Safety Stock)", f"{restock_baseline:,} units", help="Total configured safety stock floor. When stock drops below this baseline, it triggers reorder recommendations.")
 with col4:
     product_info = products_df[products_df['product_id'] == prod_id].iloc[0]
-    st.metric("Cost Per Unit", f"₱{product_info['cost_per_unit']:.2f}")
+    st.metric("Cost Per Unit", f"₱{product_info['cost_per_unit']:.2f}", help="The cost to purchase/manufacture one unit of this product.")
 with col5:
-    st.metric("Unit Selling Price", f"₱{product_info['unit_price']:.2f}")
+    st.metric("Unit Selling Price", f"₱{product_info['unit_price']:.2f}", help="The retail selling price of one unit of this product.")
 
 st.markdown("---")
 
@@ -138,7 +148,10 @@ with col_left:
     st.plotly_chart(fig_log, use_container_width=True)
 
 with col_right:
-    st.subheader("💡 Interpretability & Prediction Report")
+    st.subheader(
+        "💡 Interpretability & Prediction Report",
+        help="Shows the model's prediction report and calculated probability that this product is a slow mover based on its price, average discount, store size, and location."
+    )
     st.markdown(f"Evaluating the probability that **{selected_product}** is slow-moving.")
     
     st.metric("Slow Mover Probability", f"{pred_slow_prob:.1%}")
