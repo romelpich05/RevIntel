@@ -101,9 +101,10 @@ with col3:
 
 st.markdown("---")
 
-col_left, col_right = st.columns(2)
+# ROW 1: Product Velocity (Fastest vs. Slowest Movers)
+row1_col1, row1_col2 = st.columns(2)
 
-with col_left:
+with row1_col1:
     st.subheader(
         "🔥 Top 5 Fastest Moving Products",
         help="This horizontal bar chart displays the top 5 products with the highest cumulative units sold. Longer bars represent higher customer demand and inventory velocity."
@@ -127,8 +128,38 @@ with col_left:
         * **Cross-Selling Playbook:** Place complimentary items (such as items with high co-purchase lift) within a 3-meter radius or set up checkout shelf placements to capture impulse sales.
         """)
 
-    st.markdown("---")
+with row1_col2:
+    st.subheader(
+        "🐢 Top 5 Slowest Moving Products",
+        help="Highlights the 5 products with the lowest cumulative sales volume. These represent stagnant capital and candidates for bundling or markdown campaigns."
+    )
+    slow_movers = tx_filtered.groupby('product_name')['quantity'].sum().reset_index()
+    slow_movers = slow_movers.sort_values('quantity', ascending=True).head(5)
+    fig_slow = px.bar(slow_movers, x='quantity', y='product_name', orientation='h',
+                      color_discrete_sequence=[REVINTEL_COLORS[2]],
+                      labels={'quantity': 'Units Sold', 'product_name': 'Product'})
+    fig_slow.update_layout(yaxis={'categoryorder':'total descending'}, plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
+    st.plotly_chart(fig_slow, use_container_width=True)
+    
+    # Expanded AI Explanation
+    if not slow_movers.empty:
+        slowest_item = slow_movers.iloc[0]['product_name']
+        slowest_qty = slow_movers.iloc[0]['quantity']
+        st.info(f"""
+        ✨ **AI Liquidator Insight (Slow Movers):**
+        * **Stagnant Capital Target:** **{slowest_item}** is currently stalled, moving only **{slowest_qty:,} units** over the analysis period.
+        * **Liquidation Playbook:** 
+          1. **Bundling:** Combine this item with a high-velocity anchor (like our top movers) in a 2-item package with a 10%-15% discount.
+          2. **Secondary Display:** Relocate stock from back shelves to secondary display baskets near hot aisles or checkout lanes.
+          3. **Promotions:** Run a short-term 'buy-one-get-one' markdown campaign specifically targeting store formats that over-index on its core buyer persona.
+        """)
 
+st.markdown("---")
+
+# ROW 2: Inventory & Customers (Re-stock Alerts vs. Customer Segments)
+row2_col1, row2_col2 = st.columns(2)
+
+with row2_col1:
     st.subheader(
         "⚠️ Top 5 Re-stock Alerts",
         help="Calculates 'Stock Cover' in days: Current Stock divided by Daily Sales Velocity. Shorter bars represent critical products running out of stock soonest."
@@ -181,34 +212,7 @@ with col_left:
             * **Action Recommended:** Schedule a standard replenishment order of **{reorder_qty:,} units** during the next warehouse logistics cycle (covers safety threshold plus a 10-day sales velocity buffer).
             """)
 
-with col_right:
-    st.subheader(
-        "🐢 Top 5 Slowest Moving Products",
-        help="Highlights the 5 products with the lowest cumulative sales volume. These represent stagnant capital and candidates for bundling or markdown campaigns."
-    )
-    slow_movers = tx_filtered.groupby('product_name')['quantity'].sum().reset_index()
-    slow_movers = slow_movers.sort_values('quantity', ascending=True).head(5)
-    fig_slow = px.bar(slow_movers, x='quantity', y='product_name', orientation='h',
-                      color_discrete_sequence=[REVINTEL_COLORS[2]],
-                      labels={'quantity': 'Units Sold', 'product_name': 'Product'})
-    fig_slow.update_layout(yaxis={'categoryorder':'total descending'}, plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
-    st.plotly_chart(fig_slow, use_container_width=True)
-    
-    # Expanded AI Explanation
-    if not slow_movers.empty:
-        slowest_item = slow_movers.iloc[0]['product_name']
-        slowest_qty = slow_movers.iloc[0]['quantity']
-        st.info(f"""
-        ✨ **AI Liquidator Insight (Slow Movers):**
-        * **Stagnant Capital Target:** **{slowest_item}** is currently stalled, moving only **{slowest_qty:,} units** over the analysis period.
-        * **Liquidation Playbook:** 
-          1. **Bundling:** Combine this item with a high-velocity anchor (like our top movers) in a 2-item package with a 10%-15% discount.
-          2. **Secondary Display:** Relocate stock from back shelves to secondary display baskets near hot aisles or checkout lanes.
-          3. **Promotions:** Run a short-term 'buy-one-get-one' markdown campaign specifically targeting store formats that over-index on its core buyer persona.
-        """)
-
-    st.markdown("---")
-
+with row2_col2:
     st.subheader(
         "👥 Top Customer Segments",
         help="Visualizes the customer segment sizes clustered using K-Means. Segmentation is derived from recency of purchase, frequency, and total spend (RFM metrics)."
