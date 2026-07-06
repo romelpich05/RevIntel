@@ -60,7 +60,7 @@ elasticity_data = daily_sales.groupby('discount_pct')['quantity'].mean().reset_i
 st.markdown("---")
 st.subheader(
     "📊 Interactive Price & Promo ROI Simulator",
-    help="Configure custom base price adjustments and promotional discounts for a selected period. The simulator projects demand using the elasticity trendline and forecasts gross profit margins."
+    help="Configure custom base price adjustments and promotional discounts or BOGO offers. The simulator projects demand using the elasticity trendline and forecasts gross profit margins."
 )
 
 sim_col1, sim_col2, sim_col3 = st.columns(3)
@@ -68,10 +68,29 @@ with sim_col1:
     price_adjust_pct = st.slider("Adjust Base Selling Price (%)", min_value=-20, max_value=50, value=0, step=1, help="Raise or lower the base retail selling price before promotions. Raising the price represents a negative discount in the elasticity model.")
     new_base_price = base_price * (1 + price_adjust_pct/100)
     st.markdown(f"New Base Price: **₱{new_base_price:.2f}** ({'Price Increase' if price_adjust_pct >= 0 else 'Price Markdown'} of {abs(price_adjust_pct)}%)")
+
 with sim_col2:
-    sim_discount = st.slider("Planned Promo Discount %", min_value=0, max_value=50, value=0, step=5, help="Discount applied to the new base price during the promotion.")
+    # Choose standard markdown vs BOGO promotion
+    promo_mode = st.radio("Promo Strategy Type", ["Standard Markdown", "Buy One Take One (BOGO)"], horizontal=True, help="Standard discount lets you set a flat percentage discount. BOGO forces a 50% discount per unit but requires buying in pairs.")
+    if promo_mode == "Standard Markdown":
+        sim_discount = st.slider("Planned Promo Discount %", min_value=0, max_value=50, value=0, step=5, help="Discount applied to the new base price during the promotion.")
+    else:
+        st.info("🎁 **BOGO Active** (Customers buy 1 unit at base price, get 1 free. Effectively a 50% discount per unit).")
+        sim_discount = 50
+
 with sim_col3:
     sim_duration = st.number_input("Simulation Duration (Days)", min_value=1, max_value=30, value=7, help="Select the length of the promotional event in days.")
+    bogo_multiplier = 1.40
+    if promo_mode == "Buy One Take One (BOGO)":
+        bogo_multiplier = st.slider(
+            "BOGO Attractiveness Multiplier", 
+            min_value=1.0, 
+            max_value=2.5, 
+            value=1.4, 
+            step=0.1, 
+            key="bogo_mult",
+            help="BOGO offers have a higher psychological appeal than standard 50% discounts. This multiplier adjusts the predicted transaction lift."
+        )
 
 # Calculate base trendline parameters
 if len(elasticity_data) > 1:
@@ -105,17 +124,33 @@ with col1:
     p = np.poly1d([sim_elasticity_slope, hist_intercept])
 
 # Calculate simulation metrics using the interactive elasticity model
-promo_price = new_base_price * (1 - sim_discount/100)
-effective_discount = ((base_price - promo_price) / base_price) * 100
-
-base_daily_qty = p(0)
-promo_daily_qty = p(effective_discount)
-promo_daily_qty = max(0.1, promo_daily_qty) # Clamp quantity
+if promo_mode == "Buy One Take One (BOGO)":
+    promo_price = new_base_price / 2
+    effective_discount = ((base_price - promo_price) / base_price) * 100
+    
+    base_daily_qty = p(0)
+    raw_promo_qty = p(effective_discount)
+    raw_promo_qty = max(0.1, raw_promo_qty)
+    
+    # BOGO attracts 'raw_promo_qty * bogo_multiplier' packs sold. 
+    # Since each pack has 2 units, daily physical units sold is doubled.
+    promo_daily_qty = (raw_promo_qty * bogo_multiplier) * 2
+else:
+    promo_price = new_base_price * (1 - sim_discount/100)
+    effective_discount = ((base_price - promo_price) / base_price) * 100
+    
+    base_daily_qty = p(0)
+    promo_daily_qty = p(effective_discount)
+    promo_daily_qty = max(0.1, promo_daily_qty) # Clamp quantity
 
 # Finish sim_col2 display with final discounted price
 with sim_col2:
-    effective_change_pct = ((promo_price - base_price) / base_price) * 100
-    st.markdown(f"Discounted Promo Price: **₱{promo_price:.2f}** (Net Price Change: {effective_change_pct:+.1f}%)")
+    if promo_mode == "Buy One Take One (BOGO)":
+        effective_change_pct = ((promo_price - base_price) / base_price) * 100
+        st.markdown(f"Effective Price Per Unit: **₱{promo_price:.2f}** (Net Price Change: {effective_change_pct:+.1f}%)")
+    else:
+        effective_change_pct = ((promo_price - base_price) / base_price) * 100
+        st.markdown(f"Discounted Promo Price: **₱{promo_price:.2f}** (Net Price Change: {effective_change_pct:+.1f}%)")
 
 # Render Chart inside col1
 with col1:
@@ -157,7 +192,7 @@ with col1:
             margin_recommendation = f"This SKU is **{elasticity_class}** (coefficient: {sim_elasticity_slope:.2f}). Discounting this item is highly discouraged because markdowns will erode profit margin without driving substantial volume increases. This is a prime candidate for a base price increase (+5% to +10%) to expand net profits."
 
         st.info(f"""
-        ✨ **AI Elasticity Analysis ({elasticity_class}):**
+        #️⃣ **AI Elasticity Analysis ({elasticity_class}):**
         * **Sensitivity Coefficient:** The demand model shows a slope of **{sim_elasticity_slope:.2f}**. Each 1% price decrease (discount) applied is projected to increase daily volume by **{max(0.0, sim_elasticity_slope):.2f} units**.
         * **Strategic Playbook:** {margin_recommendation}
         * **Margin Defense Warning:** Discounting inelastic items represents a direct cash write-off. Prioritize bundling these items with high-elasticity drivers instead of markdown promotions.
@@ -195,10 +230,23 @@ no_change_rev = no_change_qty * base_price
 no_change_cost = no_change_qty * cost_price
 no_change_profit = no_change_rev - no_change_cost
 
-promo_qty = promo_daily_qty * sim_duration
-promo_rev = promo_qty * promo_price
-promo_cost = promo_qty * cost_price
-promo_profit = promo_rev - promo_cost
+if promo_mode == "Buy One Take One (BOGO)":
+    # Under BOGO:
+    # promo_daily_qty represents total physical units dispensed.
+    # Packs sold = promo_daily_qty / 2.
+    # Revenue = packs_sold * new_base_price (paying full base price for each pack)
+    # Cost = total_units_dispensed * cost_price
+    promo_qty = promo_daily_qty * sim_duration
+    packs_sold = promo_qty / 2
+    
+    promo_rev = packs_sold * new_base_price
+    promo_cost = promo_qty * cost_price
+    promo_profit = promo_rev - promo_cost
+else:
+    promo_qty = promo_daily_qty * sim_duration
+    promo_rev = promo_qty * promo_price
+    promo_cost = promo_qty * cost_price
+    promo_profit = promo_rev - promo_cost
 
 profit_delta = promo_profit - no_change_profit
 
@@ -226,7 +274,15 @@ with col_r3:
         help="Estimated gross profit margin (revenue minus product cost price). A green delta represents positive revenue growth."
     )
 
-if profit_delta < 0:
-    st.error(f"⚠️ **Margin Erosion Alert!** This pricing strategy is projected to reduce gross profit by ₱{abs(profit_delta):.2f} compared to the original baseline due to suppressed demand volume.")
+if promo_mode == "Buy One Take One (BOGO)":
+    # BOGO Margin warning
+    bogo_unit_margin = (new_base_price / 2) - cost_price
+    if bogo_unit_margin < 0:
+        st.error(f"🚨 **BOGO Capital Deficit Alert!** The cost price of this item (₱{cost_price:.2f}) is greater than 50% of the simulated selling price (₱{new_base_price / 2:.2f}). Running a BOGO campaign will lose **-₱{abs(bogo_unit_margin):.2f} on every single unit dispensed**, resulting in a cumulative margin erosion of **-₱{abs(promo_profit - no_change_profit):,.2f}**. Consider raising the base price first or aborting this campaign.")
+    else:
+        st.success(f"🎁 **Profitable BOGO Campaign!** Each BOGO pack generates a positive unit margin of **+₱{bogo_unit_margin:.2f}** (effective unit price ₱{new_base_price / 2:.2f} vs cost ₱{cost_price:.2f}). Net profit growth is projected at **+₱{profit_delta:,.2f}**.")
 else:
-    st.success(f"✅ **Profitable Strategy!** This pricing strategy is projected to increase gross profit by +₱{profit_delta:.2f} compared to the original baseline.")
+    if profit_delta < 0:
+        st.error(f"⚠️ **Margin Erosion Alert!** This pricing strategy is projected to reduce gross profit by ₱{abs(profit_delta):.2f} compared to the original baseline due to suppressed demand volume.")
+    else:
+        st.success(f"✅ **Profitable Strategy!** This pricing strategy is projected to increase gross profit by +₱{profit_delta:.2f} compared to the original baseline.")
