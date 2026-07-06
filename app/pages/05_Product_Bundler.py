@@ -20,7 +20,7 @@ sales_vel = tx_prod.groupby('product_name')['quantity'].sum().reset_index()
 sales_vel['avg_daily'] = sales_vel['quantity'] / days
 median_vel = sales_vel['avg_daily'].median()
 
-# A product is a "Slow Mover" if its daily velocity is below the median
+# A product is a "Slow Mover" if its daily velocity is value below the median
 sales_vel['velocity_class'] = sales_vel['avg_daily'].apply(lambda x: 'Fast' if x >= median_vel else 'Slow')
 velocity_map = dict(zip(sales_vel['product_name'], sales_vel['velocity_class']))
 
@@ -36,7 +36,6 @@ with col_sl2:
     min_lift = st.slider("Min Lift (Association Strength)", min_value=1.0, max_value=5.0, value=1.1, step=0.1, key="bundler_lift")
 
 # Prepare data for Market Basket Analysis
-# Group by transaction_id to create baskets
 basket = tx_prod.groupby(['transaction_id', 'product_name'])['quantity'].sum().unstack().reset_index().fillna(0)
 basket.set_index('transaction_id', inplace=True)
 
@@ -60,7 +59,6 @@ if rules.empty:
     st.stop()
 
 # Formatting Rules Dataframe
-# Convert frozensets to strings
 rules['antecedents_str'] = rules['antecedents'].apply(lambda x: ', '.join(list(x)))
 rules['consequents_str'] = rules['consequents'].apply(lambda x: ', '.join(list(x)))
 
@@ -83,7 +81,6 @@ with tab1:
     )
     
     if not strategic_bundles.empty:
-        # Show Top 3 Showcase Cards
         top_3 = strategic_bundles.head(3)
         cols = st.columns(3)
         for i, (_, row) in enumerate(top_3.iterrows()):
@@ -117,7 +114,7 @@ with tab1:
 
 with tab2:
     st.subheader("🎛️ Bundle ROI Simulator")
-    st.markdown("Pick a slow-moving product to simulate a bundle campaign and forecast its revenue impact.")
+    st.markdown("Pick a slow-moving product to simulate a bundle campaign and forecast its revenue impact. You can now build 2, 3, or 4-item bundles.")
     
     # Isolate slow movers that actually have transaction records
     slow_movers = [k for k, v in velocity_map.items() if v == 'Slow']
@@ -128,27 +125,62 @@ with tab2:
     
     if not match_rule.empty:
         best_rule = match_rule.sort_values('lift', ascending=False).iloc[0]
-        anchor_item = best_rule['antecedents_str']
+        rec_anchor = best_rule['antecedents_str']
         association_found = True
         confidence = best_rule['confidence']
         lift = best_rule['lift']
+        
+        # Second best item for pre-population
+        second_best_item = "None"
+        if len(match_rule) > 1:
+            second_best_item = match_rule.sort_values('lift', ascending=False).iloc[1]['antecedents_str']
     else:
         # Fallback: Suggest a fast mover in the same category
         slow_category = products_df[products_df['product_name'] == selected_slow]['category'].values[0]
         cat_fast_movers = [k for k, v in velocity_map.items() if v == 'Fast' and products_df[products_df['product_name'] == k]['category'].values[0] == slow_category]
         if cat_fast_movers:
-            anchor_item = cat_fast_movers[0]
+            rec_anchor = cat_fast_movers[0]
         else:
-            anchor_item = products_df[products_df['product_name'] != selected_slow]['product_name'].values[0]
+            rec_anchor = products_df[products_df['product_name'] != selected_slow]['product_name'].values[0]
         association_found = False
         confidence = 0.15 # Assumed baseline
         lift = 1.0
+        second_best_item = "None"
 
-    st.success(f"🎯 **Recommended Pairing**: Pair **{selected_slow}** (Target) with **{anchor_item}** (Anchor).")
-    if not association_found:
-        st.info("ℹ️ *Note: No direct association rule was found for this slow mover. This recommendation is based on category-based alignment.*")
-    else:
-        st.success(f"⚡ *Strong Association Found: Buyers of **{anchor_item}** have a **{confidence:.1%}** likelihood of adding **{selected_slow}** to their basket (Lift: {lift:.2f}x).*")
+    # Setup 4-column selectors for Bundle Components
+    st.markdown("### 🧱 Bundle Composition Configurator")
+    col_items1, col_items2, col_items3, col_items4 = st.columns(4)
+    with col_items1:
+        st.markdown("**Target (Slow Mover)**")
+        st.info(f"🎯 **{selected_slow}**")
+        
+    with col_items2:
+        # Change Anchor to be an interactive Selectbox instead of static text
+        fast_movers = [k for k, v in velocity_map.items() if v == 'Fast' and k != selected_slow]
+        if rec_anchor not in fast_movers:
+            fast_movers = [rec_anchor] + fast_movers
+        selected_anchor = st.selectbox("Anchor (Fast Mover)", options=fast_movers, index=fast_movers.index(rec_anchor) if rec_anchor in fast_movers else 0)
+        
+    with col_items3:
+        all_products = list(products_df['product_name'].unique())
+        # Filter out slow target and selected anchor from choices
+        item2_options = ["None"] + [p for p in all_products if p not in [selected_slow, selected_anchor]]
+        selected_item2 = st.selectbox(
+            "Bundle Item 2 (Optional)", 
+            options=item2_options, 
+            index=item2_options.index(second_best_item) if second_best_item in item2_options else 0,
+            key="bundle_item2"
+        )
+        
+    with col_items4:
+        # Guarantee "None" is always available and defaults to index 0
+        item3_options = ["None"] + [p for p in item2_options if p not in ["None", selected_item2]]
+        selected_item3 = st.selectbox(
+            "Bundle Item 3 (Optional)", 
+            options=item3_options, 
+            index=0,
+            key="bundle_item3"
+        )
 
     st.markdown("---")
     
@@ -159,32 +191,62 @@ with tab2:
     with col_s2:
         projected_weekly_sales = st.number_input("Anchor Baseline Weekly Sales (Units)", min_value=10, max_value=1000, value=150)
         
-    # Get Prices
+    # Get target and anchor prices
     p_info_target = products_df[products_df['product_name'] == selected_slow].iloc[0]
-    p_info_anchor = products_df[products_df['product_name'] == anchor_item].iloc[0]
+    p_info_anchor = products_df[products_df['product_name'] == selected_anchor].iloc[0]
     
     target_price = p_info_target['unit_price']
     anchor_price = p_info_anchor['unit_price']
     target_cost = p_info_target['cost_price']
     anchor_cost = p_info_anchor['cost_price']
     
-    # Calculations
+    # Base bundle setup
     normal_combined = target_price + anchor_price
-    discounted_combined = normal_combined * (1 - bundle_discount / 100)
+    total_cost = target_cost + anchor_cost
+    multiplier = 1.0
+    bundle_name = f"[{selected_slow}] + [{selected_anchor}]"
     
-    # Simulate
-    sim_conversion_rate = confidence * (1 + (bundle_discount / 100))
+    # Include Item 2 if active
+    if selected_item2 != "None":
+        p_info2 = products_df[products_df['product_name'] == selected_item2].iloc[0]
+        normal_combined += p_info2['unit_price']
+        total_cost += p_info2['cost_price']
+        multiplier *= 0.70
+        bundle_name += f" + [{selected_item2}]"
+        
+    # Include Item 3 if active
+    if selected_item3 != "None":
+        p_info3 = products_df[products_df['product_name'] == selected_item3].iloc[0]
+        normal_combined += p_info3['unit_price']
+        total_cost += p_info3['cost_price']
+        multiplier *= 0.70
+        bundle_name += f" + [{selected_item3}]"
+
+    # Display configured bundle structure
+    st.success(f"📦 **Configured Bundle Package:** {bundle_name}")
+
+    # Calculations
+    discounted_combined = normal_combined * (1 - bundle_discount / 100)
+    sim_conversion_rate = confidence * (1 + (bundle_discount / 100)) * multiplier
     sim_bundles_sold = int(projected_weekly_sales * sim_conversion_rate)
     
     # ROI Metrics
     bundle_revenue = sim_bundles_sold * discounted_combined
-    bundle_cost = sim_bundles_sold * (target_cost + anchor_cost)
+    bundle_cost = sim_bundles_sold * total_cost
     bundle_profit = bundle_revenue - bundle_cost
     
-    # Compare to no bundle scenario
+    # Compare to no bundle scenario (selling components separately with low volumes)
     no_bundle_target_sold = int(projected_weekly_sales * 0.05)
     no_bundle_rev = (projected_weekly_sales * anchor_price) + (no_bundle_target_sold * target_price)
     no_bundle_cost = (projected_weekly_sales * anchor_cost) + (no_bundle_target_sold * target_cost)
+    
+    if selected_item2 != "None":
+        no_bundle_rev += int(projected_weekly_sales * 0.15) * p_info2['unit_price']
+        no_bundle_cost += int(projected_weekly_sales * 0.15) * p_info2['cost_price']
+    if selected_item3 != "None":
+        no_bundle_rev += int(projected_weekly_sales * 0.15) * p_info3['unit_price']
+        no_bundle_cost += int(projected_weekly_sales * 0.15) * p_info3['cost_price']
+        
     no_bundle_profit = no_bundle_rev - no_bundle_cost
     
     profit_delta = bundle_profit - no_bundle_profit
@@ -201,7 +263,7 @@ with tab2:
         st.metric("Tied Capital Recovered", f"₱{capital_recovered:,.2f}")
         
     st.markdown("""
-    * **Simulated Weekly Bundles Sold**: Estimated quantity of customer transactions containing both items under the campaign.
+    * **Simulated Weekly Bundles Sold**: Estimated quantity of customer transactions containing all bundle items under the campaign (adjusted for multi-item price friction).
     * **Net Profit Change**: The weekly earnings difference compared to running separate items without a bundle promotion.
     * **Tied Capital Recovered**: Total value of slow-moving inventory liquidated and turned back into cash.
     """)
@@ -213,12 +275,43 @@ with tab3:
     )
     
     fig = px.scatter(rules, x='support', y='confidence', size='lift', color='lift',
-                     hover_data=['antecedents_str', 'consequents_str'],
                      labels={'support': 'Support (Frequency)', 'confidence': 'Confidence (Likelihood)', 'lift': 'Lift'},
-                     color_continuous_scale='Viridis', title="Association Rules Distribution")
+                     color_continuous_scale='Electric', title="Association Rules Distribution")
+    fig.update_traces(
+        hovertemplate="<b>%{customdata[0]} ➔ %{customdata[1]}</b><br><br>" +
+                      "Support (Frequency): %{x:.2%}<br>" +
+                      "Confidence (Likelihood): %{y:.2%}<br>" +
+                      "Lift (Strength): %{marker.size:.2f}x<extra></extra>",
+        customdata=np.stack((rules['antecedents_str'], rules['consequents_str']), axis=-1)
+    )
     fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
     st.plotly_chart(fig, use_container_width=True)
     
-    # AI Rule Insight
-    strongest_rule = rules.sort_values('lift', ascending=False).iloc[0]
-    st.info(f"✨ **AI Association Insight:** The strongest correlation identified is between **{strongest_rule['antecedents_str']}** and **{strongest_rule['consequents_str']}** (Lift: {strongest_rule['lift']:.2f}x, Confidence: {strongest_rule['confidence']:.1%}). Pair these items to drive maximum co-purchase conversions.")
+    # Calculate 5 glaring insights
+    if not rules.empty:
+        highest_lift_rule = rules.sort_values('lift', ascending=False).iloc[0]
+        highest_conf_rule = rules.sort_values('confidence', ascending=False).iloc[0]
+        highest_supp_rule = rules.sort_values('support', ascending=False).iloc[0]
+        
+        # Insight 4: Slow Mover consequent
+        slow_rules = rules[rules['consequents_str'].map(lambda x: velocity_map.get(x, 'Slow') == 'Slow')]
+        if not slow_rules.empty:
+            top_slow_rule = slow_rules.sort_values('lift', ascending=False).iloc[0]
+            slow_insight = f"Bundling **{top_slow_rule['antecedents_str']}** (Anchor) with **{top_slow_rule['consequents_str']}** (Slow Target) represents our highest-leverage strategy to clear stagnant inventory, backed by a **{top_slow_rule['lift']:.2f}x** co-purchase lift."
+        else:
+            slow_insight = "No direct high-lift rule is currently available for slow-moving targets under these support parameters. Adjust thresholds to discover pairings."
+            
+        # Insight 5: Cross-selling health
+        total_rules = len(rules)
+        high_lift_rules = len(rules[rules['lift'] > 2.0])
+        
+        st.markdown("### 🔍 5 Glaring Co-Purchase Insights")
+        st.info(f"""
+1. ⚡ **Strongest Co-Purchase Hook (Highest Lift):** Shoppers buying **{highest_lift_rule['antecedents_str']}** are **{highest_lift_rule['lift']:.2f}x** more likely to also buy **{highest_lift_rule['consequents_str']}** compared to random chance.
+2. 🎯 **Highest Purchase Conversion (Highest Confidence):** Once a customer places **{highest_conf_rule['antecedents_str']}** in their cart, there is a **{highest_conf_rule['confidence']:.1%}** probability they will add **{highest_conf_rule['consequents_str']}** before checking out.
+3. 📦 **Most Ubiquitous Basket Pairing (Highest Support):** The combination of **{highest_supp_rule['antecedents_str']}** + **{highest_supp_rule['consequents_str']}** is our most frequent basket pair, appearing in **{highest_supp_rule['support']:.2%}** of all transactions chain-wide.
+4. 🐢 **Top Dead-Stock Liquidator (Slow-Mover Target):** {slow_insight}
+5. 📊 **Cross-Selling Ecosystem Health:** The engine has mapped **{total_rules} active purchase rules**. **{high_lift_rules} rules** exhibit a strong lift of >2.0x, indicating a highly interconnected cross-selling ecosystem with strong impulse-buy behavior.
+        """)
+    else:
+        st.info("No insights available. Adjust sliders to generate rules.")

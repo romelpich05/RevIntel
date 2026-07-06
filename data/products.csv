@@ -1,51 +1,51 @@
-product_id,product_name,category,subcategory,unit_price,cost_price,brand,elasticity,abc_class,xyz_class
-P-01,Coke 1.5L,Beverages,Soft Drinks,65.0,44.34,Coca-Cola,-2.5,A,X
-P-02,Sprite 1.5L,Beverages,Soft Drinks,63.0,40.2,Coca-Cola,-2.4,B,X
-P-03,Royal Orange 1.5L,Beverages,Soft Drinks,63.0,50.32,Coca-Cola,-2.2,B,Y
-P-04,Mineral Water 500ml,Beverages,Water,18.0,11.5,Nature Spring,-0.5,A,X
-P-05,Red Bull 250ml,Beverages,Energy Drinks,90.0,59.43,Red Bull,-1.8,B,X
-P-06,Malee Coconut Water,Beverages,Juices,110.0,80.51,Malee,-1.5,C,Z
-P-07,Del Monte Pineapple Juice,Beverages,Juices,85.0,65.36,Del Monte,-1.3,B,X
-P-08,San Miguel Pale Pilsen 320ml,Beverages,Beer,55.0,33.47,San Miguel,-2.0,A,Y
-P-09,San Miguel Light 320ml,Beverages,Beer,58.0,42.5,San Miguel,-2.1,A,Y
-P-10,Nestea Iced Tea Pitcher Pack,Beverages,Powdered Drinks,25.0,19.54,Nestle,-1.1,B,Y
-P-11,Piattos Cheese 85g,Snacks,Chips,38.0,29.66,Jack 'n Jill,-2.6,A,X
-P-12,Nova Multigrain 78g,Snacks,Chips,36.0,22.7,Jack 'n Jill,-2.1,B,X
-P-13,Chippy Barbecue 110g,Snacks,Chips,32.0,21.74,Jack 'n Jill,-2.2,B,X
-P-14,SkyFlakes Crackers 10s,Snacks,Biscuits,55.0,35.12,M.Y. San,-0.7,A,X
-P-15,Fudgee Barr Chocolate 10s,Snacks,Cakes,78.0,51.02,Rebisco,-1.4,B,X
-P-16,Grom Gourmet Cheese Platter,Snacks,Cheese & Nuts,350.0,242.46,Gourmet,-1.2,C,Z
-P-17,Oreo Double Stuf 133g,Snacks,Cookies,52.0,31.48,Mondelez,-2.0,B,X
-P-18,Growers Salted Peanuts 80g,Snacks,Nuts,45.0,32.59,Growers,-1.5,B,X
-P-19,Lays Classic 170g,Snacks,Chips,145.0,99.99,Frito-Lay,-2.3,B,Y
-P-20,Pringles Sour Cream 107g,Snacks,Chips,98.0,62.14,Pringles,-2.2,B,X
-P-21,Creamsilk Conditioner 180ml,Personal Care,Hair Care,145.0,98.06,Unilever,-1.2,A,X
-P-22,Organic Herbal Hair Serum,Personal Care,Hair Care,450.0,282.45,Natures,-0.9,C,Z
-P-23,Sunsilk Shampoo 180ml,Personal Care,Hair Care,138.0,94.47,Unilever,-1.5,A,X
-P-24,Colgate Great Regular 150g,Personal Care,Oral Care,125.0,82.39,Colgate,-0.8,A,X
-P-25,Safeguard White Soap 130g,Personal Care,Bath & Body,60.0,47.45,P&G,-0.6,A,X
-P-26,Dove Beauty Bar Soap 100g,Personal Care,Bath & Body,85.0,64.13,Unilever,-0.9,B,X
-P-27,Nivea Body Lotion 250ml,Personal Care,Bath & Body,230.0,170.69,Beiersdorf,-1.4,B,Y
-P-28,Rexona Men Deodorant 50ml,Personal Care,Deodorants,115.0,90.16,Unilever,-1.0,B,X
-P-29,Gillette Vector Razor 2s,Personal Care,Shaving,120.0,90.41,P&G,-0.8,B,X
-P-30,Kleenex Facial Tissue 3-pack,Personal Care,Paper & Cotton,160.0,124.77,Kimberly-Clark,-0.7,B,X
-P-31,Tender Juicy Hotdog 1kg,Frozen Food,Processed Meat,240.0,178.66,Purefoods,-1.6,A,X
-P-32,CDO Karne Norte 150g,Frozen Food,Canned Meat,35.0,23.55,CDO,-1.1,B,X
-P-33,Purefoods Corned Beef 150g,Frozen Food,Canned Meat,88.0,63.98,Purefoods,-0.9,A,X
-P-34,Swift Mighty Meaty Spaghetti Sauce 1kg,Frozen Food,Sauces,110.0,79.86,Swift,-1.3,B,X
-P-35,Bellagio Premium Frozen Wagyu Beef Burger 4s,Frozen Food,Beef Pat,699.0,529.91,Bellagio,-1.1,C,Z
-P-36,Frozen Mixed Vegetables 500g,Frozen Food,Vegetables,120.0,89.59,Golden,-1.2,B,X
-P-37,Century Tuna Flakes in Oil 180g,Frozen Food,Canned Fish,48.0,29.41,Century,-0.8,A,X
-P-38,555 Sardines Tomato Sauce 155g,Frozen Food,Canned Fish,24.0,16.09,555,-0.6,B,X
-P-39,Marby Frozen Siomai 30s,Frozen Food,Dimsum,165.0,111.9,Marby,-1.5,B,X
-P-40,Frozen French Fries 1kg,Frozen Food,Potato,185.0,141.67,Aviko,-1.9,B,Y
-P-41,Gardenia Classic White Bread,Bakery,Sliced Bread,85.0,55.6,Gardenia,-0.5,A,X
-P-42,Gardenia Wheat Bread,Bakery,Sliced Bread,95.0,72.9,Gardenia,-0.8,B,X
-P-43,Premium Gluten-Free Organic Granola Oats,Bakery,Cereal,420.0,304.13,OrganicWay,-1.0,C,Z
-P-44,Goldilocks Mamon 6s,Bakery,Sweet Treats,150.0,90.31,Goldilocks,-1.3,B,X
-P-45,Monde Special Muffin 6s,Bakery,Sweet Treats,92.0,61.82,Monde M.Y. San,-1.4,B,X
-P-46,Spanish Bread 6-pack,Bakery,Local Breads,45.0,30.99,RevIntel Bakery,-0.8,B,X
-P-47,Pandesal 10s bag,Bakery,Local Breads,30.0,19.89,RevIntel Bakery,-0.6,A,X
-P-48,Kraft Cheez Whiz 450g,Bakery,Spreads,195.0,123.13,Kraft,-1.6,A,X
-P-49,Lady's Choice Mayonnaise 220ml,Bakery,Spreads,125.0,80.6,Unilever,-1.2,B,X
-P-50,Lily's Peanut Butter 364g,Bakery,Spreads,165.0,124.44,Lily's,-1.1,B,X
+product_id,product_name,category,subcategory,unit_price,cost_price,brand,elasticity,abc_class,xyz_class,cost_per_unit
+P-01,Coke 1.5L,Beverages,Soft Drinks,65.0,44.34,Coca-Cola,-2.5,A,X,44.34
+P-02,Sprite 1.5L,Beverages,Soft Drinks,63.0,40.2,Coca-Cola,-2.4,B,X,40.2
+P-03,Royal Orange 1.5L,Beverages,Soft Drinks,63.0,50.32,Coca-Cola,-2.2,B,Y,50.32
+P-04,Mineral Water 500ml,Beverages,Water,18.0,11.5,Nature Spring,-0.5,A,X,11.5
+P-05,Red Bull 250ml,Beverages,Energy Drinks,90.0,59.43,Red Bull,-1.8,B,X,59.43
+P-06,Malee Coconut Water,Beverages,Juices,110.0,80.51,Malee,-1.5,C,Z,80.51
+P-07,Del Monte Pineapple Juice,Beverages,Juices,85.0,65.36,Del Monte,-1.3,B,X,65.36
+P-08,San Miguel Pale Pilsen 320ml,Beverages,Beer,55.0,33.47,San Miguel,-2.0,A,Y,33.47
+P-09,San Miguel Light 320ml,Beverages,Beer,58.0,42.5,San Miguel,-2.1,A,Y,42.5
+P-10,Nestea Iced Tea Pitcher Pack,Beverages,Powdered Drinks,25.0,19.54,Nestle,-1.1,B,Y,19.54
+P-11,Piattos Cheese 85g,Snacks,Chips,38.0,29.66,Jack 'n Jill,-2.6,A,X,29.66
+P-12,Nova Multigrain 78g,Snacks,Chips,36.0,22.7,Jack 'n Jill,-2.1,B,X,22.7
+P-13,Chippy Barbecue 110g,Snacks,Chips,32.0,21.74,Jack 'n Jill,-2.2,B,X,21.74
+P-14,SkyFlakes Crackers 10s,Snacks,Biscuits,55.0,35.12,M.Y. San,-0.7,A,X,35.12
+P-15,Fudgee Barr Chocolate 10s,Snacks,Cakes,78.0,51.02,Rebisco,-1.4,B,X,51.02
+P-16,Grom Gourmet Cheese Platter,Snacks,Cheese & Nuts,350.0,242.46,Gourmet,-1.2,C,Z,242.46
+P-17,Oreo Double Stuf 133g,Snacks,Cookies,52.0,31.48,Mondelez,-2.0,B,X,31.48
+P-18,Growers Salted Peanuts 80g,Snacks,Nuts,45.0,32.59,Growers,-1.5,B,X,32.59
+P-19,Lays Classic 170g,Snacks,Chips,145.0,99.99,Frito-Lay,-2.3,B,Y,99.99
+P-20,Pringles Sour Cream 107g,Snacks,Chips,98.0,62.14,Pringles,-2.2,B,X,62.14
+P-21,Creamsilk Conditioner 180ml,Personal Care,Hair Care,145.0,98.06,Unilever,-1.2,A,X,98.06
+P-22,Organic Herbal Hair Serum,Personal Care,Hair Care,450.0,282.45,Natures,-0.9,C,Z,282.45
+P-23,Sunsilk Shampoo 180ml,Personal Care,Hair Care,138.0,94.47,Unilever,-1.5,A,X,94.47
+P-24,Colgate Great Regular 150g,Personal Care,Oral Care,125.0,82.39,Colgate,-0.8,A,X,82.39
+P-25,Safeguard White Soap 130g,Personal Care,Bath & Body,60.0,47.45,P&G,-0.6,A,X,47.45
+P-26,Dove Beauty Bar Soap 100g,Personal Care,Bath & Body,85.0,64.13,Unilever,-0.9,B,X,64.13
+P-27,Nivea Body Lotion 250ml,Personal Care,Bath & Body,230.0,170.69,Beiersdorf,-1.4,B,Y,170.69
+P-28,Rexona Men Deodorant 50ml,Personal Care,Deodorants,115.0,90.16,Unilever,-1.0,B,X,90.16
+P-29,Gillette Vector Razor 2s,Personal Care,Shaving,120.0,90.41,P&G,-0.8,B,X,90.41
+P-30,Kleenex Facial Tissue 3-pack,Personal Care,Paper & Cotton,160.0,124.77,Kimberly-Clark,-0.7,B,X,124.77
+P-31,Tender Juicy Hotdog 1kg,Frozen Food,Processed Meat,240.0,178.66,Purefoods,-1.6,A,X,178.66
+P-32,CDO Karne Norte 150g,Frozen Food,Canned Meat,35.0,23.55,CDO,-1.1,B,X,23.55
+P-33,Purefoods Corned Beef 150g,Frozen Food,Canned Meat,88.0,63.98,Purefoods,-0.9,A,X,63.98
+P-34,Swift Mighty Meaty Spaghetti Sauce 1kg,Frozen Food,Sauces,110.0,79.86,Swift,-1.3,B,X,79.86
+P-35,Bellagio Premium Frozen Wagyu Beef Burger 4s,Frozen Food,Beef Pat,699.0,529.91,Bellagio,-1.1,C,Z,529.91
+P-36,Frozen Mixed Vegetables 500g,Frozen Food,Vegetables,120.0,89.59,Golden,-1.2,B,X,89.59
+P-37,Century Tuna Flakes in Oil 180g,Frozen Food,Canned Fish,48.0,29.41,Century,-0.8,A,X,29.41
+P-38,555 Sardines Tomato Sauce 155g,Frozen Food,Canned Fish,24.0,16.09,555,-0.6,B,X,16.09
+P-39,Marby Frozen Siomai 30s,Frozen Food,Dimsum,165.0,111.9,Marby,-1.5,B,X,111.9
+P-40,Frozen French Fries 1kg,Frozen Food,Potato,185.0,141.67,Aviko,-1.9,B,Y,141.67
+P-41,Gardenia Classic White Bread,Bakery,Sliced Bread,85.0,55.6,Gardenia,-0.5,A,X,55.6
+P-42,Gardenia Wheat Bread,Bakery,Sliced Bread,95.0,72.9,Gardenia,-0.8,B,X,72.9
+P-43,Premium Gluten-Free Organic Granola Oats,Bakery,Cereal,420.0,304.13,OrganicWay,-1.0,C,Z,304.13
+P-44,Goldilocks Mamon 6s,Bakery,Sweet Treats,150.0,90.31,Goldilocks,-1.3,B,X,90.31
+P-45,Monde Special Muffin 6s,Bakery,Sweet Treats,92.0,61.82,Monde M.Y. San,-1.4,B,X,61.82
+P-46,Spanish Bread 6-pack,Bakery,Local Breads,45.0,30.99,RevIntel Bakery,-0.8,B,X,30.99
+P-47,Pandesal 10s bag,Bakery,Local Breads,30.0,19.89,RevIntel Bakery,-0.6,A,X,19.89
+P-48,Kraft Cheez Whiz 450g,Bakery,Spreads,195.0,123.13,Kraft,-1.6,A,X,123.13
+P-49,Lady's Choice Mayonnaise 220ml,Bakery,Spreads,125.0,80.6,Unilever,-1.2,B,X,80.6
+P-50,Lily's Peanut Butter 364g,Bakery,Spreads,165.0,124.44,Lily's,-1.1,B,X,124.44

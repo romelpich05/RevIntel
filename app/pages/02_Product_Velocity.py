@@ -102,13 +102,18 @@ else:
 
 st.markdown("---")
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
     st.metric("Actual Velocity", f"{actual_velocity:.2f} units/day")
 with col2:
     st.metric("Remaining Stock (Units)", f"{remaining_stock:,} units")
 with col3:
     st.metric("Restock Baseline (Safety Stock)", f"{restock_baseline:,} units")
+with col4:
+    product_info = products_df[products_df['product_id'] == prod_id].iloc[0]
+    st.metric("Cost Per Unit", f"₱{product_info['cost_per_unit']:.2f}")
+with col5:
+    st.metric("Unit Selling Price", f"₱{product_info['unit_price']:.2f}")
 
 st.markdown("---")
 
@@ -232,8 +237,16 @@ def check_restock(row):
 
 store_details['Restock Recommendation'] = store_details.apply(check_restock, axis=1)
 
+# Calculate cost per unit and capital tied up
+store_details['cost_per_unit'] = product_info['cost_per_unit']
+store_details['capital_tied_up'] = store_details['current_stock'] * store_details['cost_per_unit']
+
 # Format table for display
-table_df = store_details[['store_id', 'store_name', 'location_city', 'location_type', 'size_sqm', 'current_stock', 'safety_stock_level', 'avg_daily_sales', 'Restock Recommendation']].copy()
-table_df.columns = ['Store ID', 'Store Name', 'Location/City', 'Location Type', 'Store Size (sqm)', 'Current Stock (Units)', 'Safety Stock (Units)', 'Daily Velocity (Units/Day)', 'Status']
+table_df = store_details[['store_id', 'store_name', 'location_city', 'location_type', 'size_sqm', 'cost_per_unit', 'current_stock', 'capital_tied_up', 'safety_stock_level', 'avg_daily_sales', 'Restock Recommendation']].copy()
+table_df.columns = ['Store ID', 'Store Name', 'Location/City', 'Location Type', 'Store Size (sqm)', 'Cost Per Unit (₱)', 'Current Stock (Units)', 'Capital Tied Up (₱)', 'Safety Stock (Units)', 'Daily Velocity (Units/Day)', 'Status']
+
+# Format currency columns in display
+table_df['Cost Per Unit (₱)'] = table_df['Cost Per Unit (₱)'].apply(lambda x: f"₱{x:,.2f}")
+table_df['Capital Tied Up (₱)'] = table_df['Capital Tied Up (₱)'].apply(lambda x: f"₱{x:,.2f}")
 
 st.dataframe(table_df, use_container_width=True, hide_index=True)

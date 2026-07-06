@@ -168,6 +168,7 @@ for category, items in product_templates.items():
             "subcategory": subcat,
             "unit_price": price,
             "cost_price": round(cost_price, 2),
+            "cost_per_unit": round(cost_price, 2),
             "brand": brand,
             "elasticity": elasticity,
             "abc_class": abc_class,

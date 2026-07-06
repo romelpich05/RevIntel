@@ -7,11 +7,11 @@ import requests
 import json
 from utils import load_data, inject_custom_css
 
-st.set_page_config(page_title="RevIntel | AI Advisor", page_icon="🤖", layout="wide")
+st.set_page_config(page_title="RevIntel | Revie", page_icon="💬", layout="wide")
 inject_custom_css()
 
-st.title("🤖 RevIntel Advisor")
-st.markdown("Query the RevIntel platform context directly, using the local Pandas analyzer or live Gemini AI.")
+st.title("💬 Revie")
+st.markdown("Query the RevIntel platform context directly with Revie, using the local Pandas analyzer or live Gemini AI.")
 
 with st.spinner("Connecting to Data Engine..."):
     stores_df, products_df, customers_df, tx_prod, inventory_df, store_reviews_df = load_data()
@@ -19,7 +19,7 @@ with st.spinner("Connecting to Data Engine..."):
 # Sidebar Configuration
 st.sidebar.header("AI Configurations")
 st.sidebar.markdown("""
-To unlock conversational intelligence, enter your **Gemini API Key** below. If no key is provided, the advisor runs in **Local Mode** querying databases directly.
+To unlock conversational intelligence, enter your **Gemini API Key** below. If no key is provided, Revie runs in **Local Mode** querying databases directly.
 """)
 
 # Handle API Key
@@ -51,7 +51,7 @@ if not store_reviews_df.empty:
         review_summary.append(f"- {row['store_name']}: {row['rating']:.2f} Stars")
 
 ai_context = f"""
-You are RevIntel's AI Retail Advisor, an expert revenue growth manager and data scientist based in the Philippines.
+You are Revie, RevIntel's AI Retail Advisor, an expert revenue growth manager and data scientist based in the Philippines.
 Below is the summary of the retail store datasets:
 
 Store Footprint:
@@ -66,7 +66,7 @@ Bottom 5 Slowest Moving Products:
 Store Customer Feedback Ratings:
 {os.linesep.join(review_summary)}
 
-Answer user questions accurately, professionally, and strategically based on this retail context. Keep recommendations action-oriented.
+Answer user questions accurately, professionally, and strategically based on this retail context. Keep recommendations action-oriented. Identify yourself as Revie.
 """
 
 def get_gemini_response(prompt, api_key, context):
@@ -133,7 +133,7 @@ def get_local_response(prompt):
             return "No review data found."
             
     return """
-Hello! I am your local Advisor model. 
+Hello! I am **Revie**, your virtual RGM assistant. 
     
 Currently, I am running in **Local Mode** because no Gemini API Key was supplied. You can ask me questions about:
 - **Stores**: Type "show stores"
@@ -147,7 +147,7 @@ Currently, I am running in **Local Mode** because no Gemini API Key was supplied
 # Initialize Chat History
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = [
-        {"role": "assistant", "content": "Hello! I am your RevIntel Advisor. Ask me anything about your stores, sales velocities, restock recommendations, or customer sentiments."}
+        {"role": "assistant", "content": "Hello! I am **Revie**, your virtual RGM assistant. Ask me anything about your stores, sales velocities, restock recommendations, or customer sentiments."}
     ]
 
 # Display Chat History
