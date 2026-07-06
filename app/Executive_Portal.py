@@ -23,6 +23,8 @@ with st.spinner("Loading Enterprise Datasets..."):
 
 # Bug Fix: Compute absolute discount amount correctly
 tx_prod['discount_amount'] = tx_prod['unit_price'] * tx_prod['quantity'] * tx_prod['discount_pct']
+# Pre-calculate cost amounts for financial aggregates
+tx_prod['cost_amount'] = tx_prod['quantity'] * tx_prod['cost_price']
 
 st.sidebar.success("✅ Connected to Data Engine")
 st.sidebar.markdown("---")
@@ -63,7 +65,7 @@ if tx_filtered.empty:
 # --- KPI Calculations ---
 # Overall Margin
 total_revenue = tx_filtered['total_amount'].sum()
-total_cost = (tx_filtered['quantity'] * tx_filtered['cost_price']).sum()
+total_cost = tx_filtered['cost_amount'].sum()
 overall_margin_pct = ((total_revenue - total_cost) / total_revenue * 100) if total_revenue > 0 else 0
 
 # Wasted Promo Spend
@@ -101,7 +103,89 @@ with col3:
 
 st.markdown("---")
 
+# NEW ROW: Financial Performance Analytics (Revenue/Profit Trend & Category Contribution)
+st.markdown("### 💰 Financial Performance & Store Health")
+row0_col1, row0_col2 = st.columns(2)
+
+with row0_col1:
+    st.subheader(
+        "📈 Daily Revenue & Gross Profit Trend",
+        help="Visualizes daily sales revenue alongside net profit over time. The gap between the lines represents daily product costs (COGS)."
+    )
+    tx_filtered['transaction_date'] = pd.to_datetime(tx_filtered['transaction_date'])
+    daily_perf = tx_filtered.groupby('transaction_date').agg(
+        revenue=('total_amount', 'sum'),
+        cost=('cost_amount', 'sum')
+    ).reset_index().sort_values('transaction_date')
+    daily_perf['profit'] = daily_perf['revenue'] - daily_perf['cost']
+    
+    fig_trend = px.area(
+        daily_perf, 
+        x='transaction_date', 
+        y=['revenue', 'profit'],
+        labels={'value': 'Amount (₱)', 'transaction_date': 'Date', 'variable': 'Financial Metric'},
+        color_discrete_sequence=[REVINTEL_COLORS[0], REVINTEL_COLORS[3]]
+    )
+    
+    # Rename legend labels for readability
+    newnames = {'revenue':'Gross Sales Revenue', 'profit':'Gross Profit Margin'}
+    fig_trend.for_each_trace(lambda t: t.update(name = newnames.get(t.name, t.name)))
+    
+    fig_trend.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa', legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
+    st.plotly_chart(fig_trend, use_container_width=True)
+    
+    # AI Trend Explanation
+    if not daily_perf.empty:
+        peak_day_row = daily_perf.sort_values('revenue', ascending=False).iloc[0]
+        peak_date = peak_day_row['transaction_date'].strftime('%Y-%m-%d')
+        peak_rev = peak_day_row['revenue']
+        peak_profit = peak_day_row['profit']
+        st.info(f"""
+        ✨ **AI Financial Trend Insight:**
+        * **Peak Sales Event:** Sales peaked on **{peak_date}** reaching **₱{peak_rev:,.2f}** in gross revenue and yielding **₱{peak_profit:,.2f}** in profit. 
+        * **Operational Strategy:** Review promotional schedules or weekday foot traffic patterns around this peak date to replicate high-performance campaigns.
+        """)
+
+with row0_col2:
+    st.subheader(
+        "📊 Category Cost vs. Revenue Breakdown",
+        help="Visualizes total sales revenue compared directly against product cost values by category. A larger gap between the bars represents higher profit margin contribution."
+    )
+    cat_perf = tx_filtered.groupby('category').agg(
+        revenue=('total_amount', 'sum'),
+        cost=('cost_amount', 'sum')
+    ).reset_index().sort_values('revenue', ascending=False)
+    cat_perf['profit'] = cat_perf['revenue'] - cat_perf['cost']
+    cat_perf['margin_pct'] = (cat_perf['profit'] / cat_perf['revenue'] * 100).fillna(0)
+    
+    cat_melted = cat_perf.melt(id_vars='category', value_vars=['revenue', 'cost'], 
+                               var_name='Financial Metric', value_name='Amount (₱)')
+    cat_melted['Financial Metric'] = cat_melted['Financial Metric'].map({'revenue': 'Sales Revenue', 'cost': 'Inventory Cost (COGS)'})
+    
+    fig_cat = px.bar(
+        cat_melted, 
+        x='category', 
+        y='Amount (₱)', 
+        color='Financial Metric',
+        barmode='group',
+        color_discrete_sequence=[REVINTEL_COLORS[1], REVINTEL_COLORS[4]]
+    )
+    fig_cat.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
+    st.plotly_chart(fig_cat, use_container_width=True)
+    
+    # AI Category Explanation
+    if not cat_perf.empty:
+        top_cat_row = cat_perf.iloc[0]
+        st.info(f"""
+        ✨ **AI Category Margin Insight:**
+        * **Highest Revenue Category:** **{top_cat_row['category']}** generated the highest sales revenue at **₱{top_cat_row['revenue']:,.2f}** with an average gross margin percentage of **{top_cat_row['margin_pct']:.1f}%**.
+        * **Profit Booster Strategy:** Run selective bundles for high-margin products in this category to drive transaction value while protecting core store profitability.
+        """)
+
+st.markdown("---")
+
 # ROW 1: Product Velocity (Fastest vs. Slowest Movers)
+st.markdown("### ⚡ Inventory Velocity Analytics")
 row1_col1, row1_col2 = st.columns(2)
 
 with row1_col1:
