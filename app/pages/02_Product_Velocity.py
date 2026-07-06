@@ -14,7 +14,7 @@ from utils import load_data, inject_custom_css, REVINTEL_COLORS
 st.set_page_config(page_title="Product Velocity", page_icon="⚡", layout="wide")
 inject_custom_css()
 
-st.title("⚡ Product Velocity & Agile ML Baseline")
+st.title("⚡ Product Velocity & ML Baseline")
 st.markdown("Analyze sales velocity, track inventory levels, and interpret the Logistic Regression classification model.")
 
 with st.spinner("Analyzing Product Velocity & Training Classification Model..."):
@@ -131,7 +131,7 @@ col_left, col_right = st.columns([1.5, 1.0])
 
 with col_left:
     st.subheader(
-        "📈 Agile Logistic Regression Coefficients",
+        "📈 Logistic Regression Coefficients",
         help="This horizontal bar chart displays the mathematical weights (coefficients) of features in the Logistic Regression model. Bars pointing to the right increase the likelihood of the product being classified as a slow-moving item. Bars pointing to the left decrease it, meaning they drive faster sales velocity."
     )
     
