@@ -167,10 +167,12 @@ with col_right:
     top_pos_driver = coeff_df_log.iloc[-1]['Feature']
     top_neg_driver = coeff_df_log.iloc[0]['Feature']
     
+    # Render detailed drivers explanation
     st.info(f"""
-    ✨ **AI Interpretability Insight:**
-    * **Primary Slow Mover Driver:** **{top_pos_driver}** has the strongest positive coefficient, meaning increases in this feature are most likely to slow down inventory velocity.
-    * **Primary Sales Velocity Driver:** **{top_neg_driver}** has the strongest negative coefficient, meaning this feature is highly effective at boosting velocity and keeping inventory flowing.
+    ✨ **AI Interpretability & Driver Analysis:**
+    * **Stagnancy Accelerator:** **{top_pos_driver}** exhibits the highest positive coefficient (**{coeff_df_log.iloc[-1]['Coefficient']:.2f}**). This indicates that increases or presence in this feature strongly push this product toward slow-moving status. 
+    * **Velocity Accelerator:** **{top_neg_driver}** exhibits the strongest negative weight (**{coeff_df_log.iloc[0]['Coefficient']:.2f}**). This is your primary lever to trigger fast-mover dynamics. If this feature is 'Avg Discount', it confirms the effectiveness of price elasticity promotions for this item.
+    * **Action Plan:** To optimize inventory velocity, align pricing adjustments directly with the high-impact negative drivers while reducing exposure to stores or layouts correlated with positive weights.
     """)
 
 st.markdown("---")
@@ -234,10 +236,14 @@ st.plotly_chart(fig_map, use_container_width=True)
 highest_stock_store = store_details.sort_values('current_stock', ascending=False).iloc[0]
 highest_vel_store = store_details.sort_values('avg_daily_sales', ascending=False).iloc[0]
 
+# Calculate specific stock transfer recommendations
+stock_transfer_qty = int(highest_stock_store['current_stock'] * 0.40)
+
 st.info(f"""
-✨ **AI Map Insight:**
-- **Inventory Concentration:** **{highest_stock_store['store_name']}** holds the highest current stock level with **{highest_stock_store['current_stock']:,} units** (largest bubble).
-- **Sales Hotspot:** **{highest_vel_store['store_name']}** exhibits the fastest product velocity at **{highest_vel_store['avg_daily_sales']:.2f} units/day** (brightest bubble).
+✨ **AI Map Logistics & Transfer Insight:**
+* **Inventory Concentration:** **{highest_stock_store['store_name']}** holds the highest current stock level with **{highest_stock_store['current_stock']:,} units** (largest bubble).
+* **Sales Hotspot:** **{highest_vel_store['store_name']}** exhibits the fastest product velocity at **{highest_vel_store['avg_daily_sales']:.2f} units/day** (brightest bubble).
+* **Inter-branch Transfer Play:** We recommend executing a stock transfer request of **{stock_transfer_qty:,} units** from the overstocked store (**{highest_stock_store['store_name']}**) directly to the high-velocity hotspot (**{highest_vel_store['store_name']}**). This immediately rebalances safety stock coverage without committing additional cash to purchasing fresh supplier inventory.
 """)
 
 # Restock Recommendation Status

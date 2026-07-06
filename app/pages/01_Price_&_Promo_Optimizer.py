@@ -145,12 +145,23 @@ with col1:
         fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
         st.plotly_chart(fig, use_container_width=True)
         
-        # AI Insight
-        if sim_elasticity_slope > 0:
-            insight_text = f"✨ **AI Elasticity Insight:** At the current simulated slope of **{sim_elasticity_slope:.2f}**, demand is highly responsive to pricing. Each 1% price decrease (discount) applied is projected to increase daily volume by **{sim_elasticity_slope:.2f} units**."
+        # Expanded AI Insight with deep economic details
+        if sim_elasticity_slope > 1.5:
+            elasticity_class = "Highly Elastic (Sensitive)"
+            margin_recommendation = f"Since this product behaves as **{elasticity_class}**, price hikes will trigger sharp demand drops, while promotional discounts will yield significant volume multipliers. We recommend running targeted weekend promotions (e.g. 10%-15% markdown) to capture high-volume basket additions."
+        elif sim_elasticity_slope > 0.5:
+            elasticity_class = "Unit Elastic / Moderate"
+            margin_recommendation = f"This product behaves with **{elasticity_class}** sensitivity. Pricing adjustments will lead to roughly proportional shifts in demand. Focus on optimizing pricing in small incremental adjustments (+2% to +5%) to test customer acceptance before committing chain-wide."
         else:
-            insight_text = f"✨ **AI Elasticity Insight:** At the current simulated slope of **{sim_elasticity_slope:.2f}**, demand behaves inversely or is inelastic. Adjusting pricing shows minimal positive correlation with volume."
-        st.info(insight_text)
+            elasticity_class = "Inelastic (Insensitive)"
+            margin_recommendation = f"This SKU is **{elasticity_class}** (coefficient: {sim_elasticity_slope:.2f}). Discounting this item is highly discouraged because markdowns will erode profit margin without driving substantial volume increases. This is a prime candidate for a base price increase (+5% to +10%) to expand net profits."
+
+        st.info(f"""
+        ✨ **AI Elasticity Analysis ({elasticity_class}):**
+        * **Sensitivity Coefficient:** The demand model shows a slope of **{sim_elasticity_slope:.2f}**. Each 1% price decrease (discount) applied is projected to increase daily volume by **{max(0.0, sim_elasticity_slope):.2f} units**.
+        * **Strategic Playbook:** {margin_recommendation}
+        * **Margin Defense Warning:** Discounting inelastic items represents a direct cash write-off. Prioritize bundling these items with high-elasticity drivers instead of markdown promotions.
+        """)
     else:
         st.warning("Not enough variance in historical discounts to model elasticity for this product.")
         

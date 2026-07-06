@@ -100,9 +100,14 @@ with tab1:
         for fmt, count in format_counts.items():
             st.metric(fmt, f"{count} stores")
             
-    # AI Insight for clustering
+    # Expanded AI Insight for clustering
     largest_format = format_counts.index[0]
-    st.info(f"✨ **AI Cluster Insight:** Store size clustering isolates **{largest_format}** as your most common layout format ({format_counts.iloc[0]} outlets). Adjusting assortments specifically for this format will yield the highest chain-wide margin impact.")
+    st.info(f"""
+    ✨ **AI Cluster & Assortment Insight:**
+    * **Dominant Layout:** Store size clustering isolates **{largest_format}** as your most common layout format ({format_counts.iloc[0]} outlets). 
+    * **Assortment Plan:** We recommend designing a standardized category spacing template for **{largest_format}** branches. Standardizing shelf configs here reduces localized operational overhead.
+    * **Stock Control:** Set up automated stock buffers configured precisely for the floor footprint of this format to prevent over-stocking of bulky categories.
+    """)
             
     st.markdown("---")
     st.subheader(
@@ -126,10 +131,15 @@ with tab1:
     fig_heat.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
     st.plotly_chart(fig_heat, use_container_width=True)
     
-    # AI Insight for fit heatmap
+    # Expanded AI Insight for fit heatmap
     max_cat = pivot_matrix.max(axis=0).idxmax()
     max_fmt = pivot_matrix.max(axis=1).idxmax()
-    st.info(f"✨ **AI Fit Insight:** **{max_cat}** generates the highest performance within **{max_fmt}** stores. Ensure these items have prime shelf positioning and priority allocation in these locations.")
+    st.info(f"""
+    ✨ **AI Fit & Shelf Placement Insight:**
+    * **Performance Driver:** **{max_cat}** generates the highest performance within **{max_fmt}** stores.
+    * **Merchandising Playbook:** Ensure this category receives prime, eye-level shelf space and front-of-store endcap displays in all **{max_fmt}** outlets. 
+    * **Cross-Merchandising:** Place secondary, slow-moving items from compatible categories next to these drivers to drive impulse purchases and raise average transaction size.
+    """)
 
 
 # ==================== TAB 2 ====================
@@ -203,13 +213,14 @@ with tab2:
         fig_idx.update_layout(yaxis={'categoryorder':'total ascending'}, plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
         st.plotly_chart(fig_idx, use_container_width=True)
         
-        # AI Persona Summary Card
+        # Expanded AI Persona Summary Card
         top_over_index = combined_idx.sort_values('Deviation (pp)', ascending=False).head(3)['Attribute'].tolist()
         
         st.success(f"""
-        🎯 **Target Persona Blueprint**: 
-        The core buyers of **{selected_product}** over-index most strongly in: **{', '.join(top_over_index)}**. 
-        Tailoring local marketing assets and store placement around these specific groups will maximize velocity.
+        🎯 **Target Persona Blueprint:**
+        * **Over-indexing Cohorts:** The core buyers of **{selected_product}** over-index most strongly in: **{', '.join(top_over_index)}**.
+        * **Targeted Marketing Campaign:** Design social media assets or visual posters featuring imagery that matches these demographics. For example, if Gen Z and high-income groups over-index, focus on digital placements, premium aesthetics, and contactless payment features.
+        * **Assortment Localization:** In stores where local residential demographics match this blueprint, increase the shelf space allocated to this item by 20% to capture localized demand patterns.
         """)
 
 
@@ -246,13 +257,25 @@ with tab3:
     fig_traffic.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
     st.plotly_chart(fig_traffic, use_container_width=True)
     
-    # AI Traffic Insight
+    # Expanded AI Traffic Insight
     local_city = selected_store_info['location_city']
     local_shoppers_count = traffic_pivot.loc[local_city, local_city] if local_city in traffic_pivot.index and local_city in traffic_pivot.columns else 0
     total_store_shoppers = traffic_pivot[local_city].sum() if local_city in traffic_pivot.columns else 1
     local_ratio = local_shoppers_count / total_store_shoppers
     
-    st.info(f"✨ **AI Traffic Insight:** **{local_ratio:.1%}** of shoppers visiting stores in **{local_city}** are local residents (living in the same city). The remaining **{1-local_ratio:.1%}** represents commuter traffic from surrounding municipalities.")
+    if local_ratio > 0.6:
+        traffic_class = "Neighborhood Store"
+        traffic_rec = "Focus assortments on household stables, multi-pack grocery sizes, and customer loyalty rewards. Marketing should leverage neighborhood-specific flyers or local community sponsorships."
+    else:
+        traffic_class = "Transit/Commuter Hub"
+        traffic_rec = "Focus assortments on convenience formats, single-serve ready-to-eat foods, quick-checkout options, and grab-and-go displays near the exit corridors to capture high transit traffic."
+
+    st.info(f"""
+    ✨ **AI Location & Traffic Flow Analysis ({traffic_class}):**
+    * **Local Resident Share:** **{local_ratio:.1%}** of shoppers live in **{local_city}** (same city as the store).
+    * **Commuter/Transit Share:** **{1-local_ratio:.1%}** of visitors commute from surrounding cities.
+    * **Operational Strategy:** {traffic_rec}
+    """)
     
     # 2. Demographic Affinity Model
     visitors = tx_cust[tx_cust['store_id'] == selected_store_id]['customer_id'].unique()
@@ -283,9 +306,13 @@ with tab3:
         fig_aff.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
         st.plotly_chart(fig_aff, use_container_width=True)
         
-        # AI Affinity Insight
+        # Expanded AI Affinity Insight
         highest_aff_group = coeff_df.iloc[-1]['Demographic Feature']
-        st.info(f"✨ **AI Affinity Insight:** Customers belonging to the **{highest_aff_group}** group have the highest probability coefficient of shopping at this branch.")
+        st.info(f"""
+        ✨ **AI Demographic Affinity Insight:**
+        * **Target Visitor Affinity:** Customers belonging to the **{highest_aff_group}** group exhibit the highest probability coefficient of shopping at this branch.
+        * **Local Promotions Play:** Target this specific cohort with localized CRM push alerts (e.g. customized SMS or email discounts) specifically active for this branch to drive higher store foot traffic.
+        """)
     else:
         st.info("Insufficient visitor data to build an affinity model for this store.")
         

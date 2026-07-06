@@ -116,11 +116,16 @@ with col_left:
     fig_fast.update_layout(yaxis={'categoryorder':'total ascending'}, plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
     st.plotly_chart(fig_fast, use_container_width=True)
     
-    # AI Explanation
+    # Expanded AI Explanation
     if not top_movers.empty:
         fastest_item = top_movers.iloc[0]['product_name']
         fastest_qty = top_movers.iloc[0]['quantity']
-        st.info(f"✨ **AI Insight:** **{fastest_item}** is your primary volume driver with **{fastest_qty:,} units** sold. We recommend maintaining optimal shelf space to prevent out-of-stocks.")
+        st.info(f"""
+        ✨ **AI Velocity Insight (Movers):**
+        * **Top Volume Driver:** **{fastest_item}** leads sales with **{fastest_qty:,} units** sold, making up a significant portion of this branch's volume.
+        * **Shelf-Space Optimization:** We recommend dedicating at least 2.5x more facing space on eye-level shelves compared to standard SKUs. 
+        * **Cross-Selling Playbook:** Place complimentary items (such as items with high co-purchase lift) within a 3-meter radius or set up checkout shelf placements to capture impulse sales.
+        """)
 
     st.markdown("---")
 
@@ -152,14 +157,29 @@ with col_left:
     fig_restock.update_layout(yaxis={'categoryorder':'total ascending'}, plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
     st.plotly_chart(fig_restock, use_container_width=True)
     
-    # AI Explanation
+    # Expanded AI Explanation
     if not restock_alerts.empty:
         critical_item = restock_alerts.iloc[0]['product_name']
         critical_days = restock_alerts.iloc[0]['stock_cover_days']
+        current_stk = restock_alerts.iloc[0]['current_stock']
+        safety_stk = restock_alerts.iloc[0]['safety_stock_level']
+        daily_vel = restock_alerts.iloc[0]['avg_daily']
+        
+        # Calculate suggested reorder quantity to reach safety stock + 10 days of sales cover buffer
+        reorder_qty = int(max(0, (safety_stk + (daily_vel * 10)) - current_stk))
+        
         if critical_days <= 2:
-            st.error(f"🚨 **AI Alert:** **{critical_item}** is at critical risk with only **{critical_days:.1f} days** of stock remaining. Reorder immediately.")
+            st.error(f"""
+            🚨 **AI Out-of-Stock Alert!**
+            * **Critical SKU:** **{critical_item}** is at extreme risk with only **{critical_days:.1f} days** of stock cover remaining (Current Stock: {current_stk:.0f} units vs Safety Level: {safety_stk:.0f} units).
+            * **Action Recommended:** Dispatch an urgent purchase order of **{reorder_qty:,} units** immediately to prevent shelf depletion, loss of customer goodwill, and potential competitor switching.
+            """)
         else:
-            st.warning(f"⚠️ **AI Insight:** **{critical_item}** is leading restock urgency with **{critical_days:.1f} days** of buffer. Schedule replenishment soon.")
+            st.warning(f"""
+            ⚠️ **AI Replenishment Warning:**
+            * **Low Buffer SKU:** **{critical_item}** has a stock cover of **{critical_days:.1f} days** (Current Stock: {current_stk:.0f} units vs Safety Level: {safety_stk:.0f} units).
+            * **Action Recommended:** Schedule a standard replenishment order of **{reorder_qty:,} units** during the next warehouse logistics cycle (covers safety threshold plus a 10-day sales velocity buffer).
+            """)
 
 with col_right:
     st.subheader(
@@ -174,11 +194,18 @@ with col_right:
     fig_slow.update_layout(yaxis={'categoryorder':'total descending'}, plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
     st.plotly_chart(fig_slow, use_container_width=True)
     
-    # AI Explanation
+    # Expanded AI Explanation
     if not slow_movers.empty:
         slowest_item = slow_movers.iloc[0]['product_name']
         slowest_qty = slow_movers.iloc[0]['quantity']
-        st.info(f"✨ **AI Insight:** **{slowest_item}** has stalled with only **{slowest_qty:,} units** sold. Consider pairing this item with a high-velocity anchor in the Product Bundler tab.")
+        st.info(f"""
+        ✨ **AI Liquidator Insight (Slow Movers):**
+        * **Stagnant Capital Target:** **{slowest_item}** is currently stalled, moving only **{slowest_qty:,} units** over the analysis period.
+        * **Liquidation Playbook:** 
+          1. **Bundling:** Combine this item with a high-velocity anchor (like our top movers) in a 2-item package with a 10%-15% discount.
+          2. **Secondary Display:** Relocate stock from back shelves to secondary display baskets near hot aisles or checkout lanes.
+          3. **Promotions:** Run a short-term 'buy-one-get-one' markdown campaign specifically targeting store formats that over-index on its core buyer persona.
+        """)
 
     st.markdown("---")
 
@@ -221,10 +248,26 @@ with col_right:
         fig_seg.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
         st.plotly_chart(fig_seg, use_container_width=True)
         
-        # AI Explanation
+        # Expanded AI Explanation
         top_segment = seg_counts.iloc[0]['Segment']
         top_count = seg_counts.iloc[0]['Customer Count']
-        st.info(f"✨ **AI Insight:** **{top_segment}** is your largest cohort at **{top_count:,} customers**. Offering targeted loyalty campaigns to this segment is highly recommended to protect recurring revenue.")
+        
+        # Define marketing recommendations per segment type
+        marketing_playbook = {
+            'Champions': "Launch exclusive early-access perks, custom product pre-releases, and zero-discount VIP events to cement their status.",
+            'Loyal Customers': "Implement multi-buy reward points (e.g. 2x loyalty points on weekend transactions) to increase shopping basket size.",
+            'Recent Customers': "Distribute digital coupons (e.g. ₱50 off next order of ₱500+) valid within 14 days to build shopping habits.",
+            'At Risk': "Send automated win-back Viber alerts containing high-value discounts (e.g. 15% off) on their historically favorite categories.",
+            'Hibernating': "Offer highly targeted clearance discounts on overstocked items or standard categories to clean out inventory while capturing dormant buyers."
+        }
+        play = marketing_playbook.get(top_segment, "Initiate personalized CRM outreach campaigns to boost customer lifetime value.")
+        
+        st.info(f"""
+        ✨ **AI Cohort Insight (Segmentation):**
+        * **Dominant Cohort:** **{top_segment}** is your largest segment, containing **{top_count:,} active buyers** who represent a substantial portion of customer lifetime value.
+        * **Strategic Playbook:** {play}
+        * **Target KPI:** Focus on retention and increasing purchase frequency. A 5% increase in retention within this cohort can boost store profitability by up to 25%.
+        """)
     else:
         st.info("Not enough customers to perform K-Means segmentation for this selection.")
 

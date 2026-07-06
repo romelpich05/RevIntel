@@ -329,8 +329,10 @@ with tab3:
         if not slow_rules.empty:
             top_slow_rule = slow_rules.sort_values('lift', ascending=False).iloc[0]
             slow_insight = f"Bundling **{top_slow_rule['antecedents_str']}** (Anchor) with **{top_slow_rule['consequents_str']}** (Slow Target) represents our highest-leverage strategy to clear stagnant inventory, backed by a **{top_slow_rule['lift']:.2f}x** co-purchase lift."
+            slow_action = f"**Action Plan:** Create a physical 'Bundle Pack' near the entrances of major outlets. Display the slow item clearly with a banner explaining the combined markdown saving to capture bargain-hunting shoppers."
         else:
             slow_insight = "No direct high-lift rule is currently available for slow-moving targets under these support parameters. Adjust thresholds to discover pairings."
+            slow_action = "Adjust support and lift parameters to search for secondary association linkages."
             
         # Insight 5: Cross-selling health
         total_rules = len(rules)
@@ -339,10 +341,15 @@ with tab3:
         st.markdown("### 🔍 5 Glaring Co-Purchase Insights")
         st.info(f"""
 1. ⚡ **Strongest Co-Purchase Hook (Highest Lift):** Shoppers buying **{highest_lift_rule['antecedents_str']}** are **{highest_lift_rule['lift']:.2f}x** more likely to also buy **{highest_lift_rule['consequents_str']}** compared to random chance.
+   * **Action Play:** Position these items in adjacent shelf bays or execute a cross-brand layout layout strategy. Ensure visual signs suggest the pairing to checkout crowds.
 2. 🎯 **Highest Purchase Conversion (Highest Confidence):** Once a customer places **{highest_conf_rule['antecedents_str']}** in their cart, there is a **{highest_conf_rule['confidence']:.1%}** probability they will add **{highest_conf_rule['consequents_str']}** before checking out.
+   * **Action Play:** Set up a shelf divider or coupon hanger next to **{highest_conf_rule['antecedents_str']}** recommending: *'Complete your purchase with {highest_conf_rule['consequents_str']}!'* or place them directly on checkout racks.
 3. 📦 **Most Ubiquitous Basket Pairing (Highest Support):** The combination of **{highest_supp_rule['antecedents_str']}** + **{highest_supp_rule['consequents_str']}** is our most frequent basket pair, appearing in **{highest_supp_rule['support']:.2%}** of all transactions chain-wide.
+   * **Action Play:** Design a standard dual-item staple bundle at a mild discount (e.g. 5% discount) to increase average transaction values (basket size expansion) without over-eroding core margin rates.
 4. 🐢 **Top Dead-Stock Liquidator (Slow-Mover Target):** {slow_insight}
+   * {slow_action}
 5. 📊 **Cross-Selling Ecosystem Health:** The engine has mapped **{total_rules} active purchase rules**. **{high_lift_rules} rules** exhibit a strong lift of >2.0x, indicating a highly interconnected cross-selling ecosystem with strong impulse-buy behavior.
+   * **Action Play:** Focus on layout adjustments over heavy direct markdowns. Highly interconnected catalogs mean customers naturally impulse-buy without requiring margin-eroding discounts.
         """)
     else:
         st.info("No insights available. Adjust sliders to generate rules.")
