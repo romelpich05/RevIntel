@@ -171,34 +171,53 @@ with tab2:
         lift = 1.0
         second_best_item = "None"
 
+    # Define selectbox option styling function showing Green for Fast and Red for Slow
+    def format_product_option(name):
+        if name == "None":
+            return "None"
+        v_class = velocity_map.get(name, "Slow")
+        emoji = "🟢 [Fast]" if v_class == "Fast" else "🔴 [Slow]"
+        return f"{emoji} {name}"
+
     # Setup 4-column selectors for Bundle Components
     st.markdown("### 🧱 Bundle Composition Configurator")
     col_items1, col_items2, col_items3, col_items4 = st.columns(4)
+    
     with col_items1:
-        st.markdown("**Target (Slow Mover)**")
-        st.info(f"🎯 **{selected_slow}**")
+        # Format target selector as a disabled selectbox for perfect vertical alignment
+        st.selectbox(
+            "Target (Slow Mover)", 
+            options=[selected_slow], 
+            index=0, 
+            disabled=True,
+            format_func=format_product_option,
+            help="The slow-moving target product selected for liquidation."
+        )
         
     with col_items2:
-        fast_movers = [k for k, v in velocity_map.items() if v == 'Fast' and k != selected_slow]
-        if rec_anchor not in fast_movers:
-            fast_movers = [rec_anchor] + fast_movers
+        # Sort all products by sales quantity (fastest to slowest)
+        sorted_products_df = tx_prod.groupby('product_name')['quantity'].sum().reset_index().sort_values('quantity', ascending=False)
+        sorted_product_names = [p for p in sorted_products_df['product_name'] if p != selected_slow]
+        
+        # Select Anchor (defaults to the recommended anchor)
         selected_anchor = st.selectbox(
             "Anchor (Fast Mover)", 
-            options=fast_movers, 
-            index=fast_movers.index(rec_anchor) if rec_anchor in fast_movers else 0,
-            help="Choose the primary fast-moving anchor product to bind the bundle package."
+            options=sorted_product_names, 
+            index=sorted_product_names.index(rec_anchor) if rec_anchor in sorted_product_names else 0,
+            format_func=format_product_option,
+            help="Choose the primary fast-moving anchor product to bind the bundle package. Ordered from fastest to slowest."
         )
         
     with col_items3:
-        all_products = list(products_df['product_name'].unique())
-        # Filter out slow target and selected anchor from choices
-        item2_options = ["None"] + [p for p in all_products if p not in [selected_slow, selected_anchor]]
+        # Filter choices
+        item2_options = ["None"] + [p for p in sorted_product_names if p != selected_anchor]
         selected_item2 = st.selectbox(
             "Bundle Item 2 (Optional)", 
             options=item2_options, 
             index=item2_options.index(second_best_item) if second_best_item in item2_options else 0,
             key="bundle_item2",
-            help="Add a third product (optional) to build a 3-item bundle package."
+            format_func=format_product_option,
+            help="Add a third product (optional) to build a 3-item bundle package. Ordered from fastest to slowest."
         )
         
     with col_items4:
@@ -209,7 +228,8 @@ with tab2:
             options=item3_options, 
             index=0,
             key="bundle_item3",
-            help="Add a fourth product (optional) to build a 4-item bundle package."
+            format_func=format_product_option,
+            help="Add a fourth product (optional) to build a 4-item bundle package. Ordered from fastest to slowest."
         )
 
     st.markdown("---")
