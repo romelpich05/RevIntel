@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from utils import load_data, inject_custom_css, REVINTEL_COLORS
 
 st.set_page_config(
-    page_title="RevIntel | Command Center",
+    page_title="RevIntel | Executive Portal",
     page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -15,7 +15,7 @@ st.set_page_config(
 
 inject_custom_css()
 
-st.title("Command Center")
+st.title("Executive Portal")
 st.markdown("### Right product. Right customer. Right price. Right store.")
 
 with st.spinner("Loading Enterprise Datasets..."):
@@ -27,7 +27,7 @@ tx_prod['discount_amount'] = tx_prod['unit_price'] * tx_prod['quantity'] * tx_pr
 st.sidebar.success("✅ Connected to Data Engine")
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Modules**")
-st.sidebar.info("Navigate using the pages above. Adjust filters directly on the Command Center dashboard.")
+st.sidebar.info("Navigate using the pages above. Adjust filters directly on the Executive Portal dashboard.")
 
 # Branch Selector placed directly at the top of the main page
 col_select, _ = st.columns([1, 1])
@@ -39,7 +39,7 @@ with col_select:
         "Select Branch Location Filter", 
         options=store_options, 
         key="main_branch_filter",
-        help="Filter all statistics and charts in the Command Center for a specific store branch or select 'All Branches' to view aggregates across the entire retail chain."
+        help="Filter all statistics and charts in the Executive Portal for a specific store branch or select 'All Branches' to view aggregates across the entire retail chain."
     )
 
 # Map selected store
