@@ -131,7 +131,18 @@ with row0_col1:
     newnames = {'revenue':'Gross Sales Revenue', 'profit':'Gross Profit Margin'}
     fig_trend.for_each_trace(lambda t: t.update(name = newnames.get(t.name, t.name)))
     
-    fig_trend.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa', legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
+    fig_trend.update_layout(
+        plot_bgcolor='rgba(0,0,0,0)', 
+        paper_bgcolor='rgba(0,0,0,0)', 
+        font_color='#f8f9fa', 
+        legend=dict(
+            orientation="h",
+            yanchor="bottom", 
+            y=1.02, 
+            xanchor="left", 
+            x=0.01
+        )
+    )
     st.plotly_chart(fig_trend, use_container_width=True)
     
     # AI Trend Explanation
