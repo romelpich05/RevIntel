@@ -184,7 +184,18 @@ with row0_col2:
         barmode='group',
         color_discrete_sequence=[REVINTEL_COLORS[1], REVINTEL_COLORS[4]]
     )
-    fig_cat.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#f8f9fa')
+    fig_cat.update_layout(
+        plot_bgcolor='rgba(0,0,0,0)', 
+        paper_bgcolor='rgba(0,0,0,0)', 
+        font_color='#f8f9fa',
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="left",
+            x=0.01
+        )
+    )
     st.plotly_chart(fig_cat, use_container_width=True)
     
     # AI Category Explanation
