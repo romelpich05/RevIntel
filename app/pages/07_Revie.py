@@ -17,16 +17,13 @@ with st.spinner("Connecting to Data Engine..."):
     stores_df, products_df, customers_df, tx_prod, inventory_df, store_reviews_df = load_data()
 
 # Sidebar Configuration
-st.sidebar.header("AI Configurations")
-st.sidebar.markdown("""
-To unlock conversational intelligence, enter your **Gemini API Key** below. If no key is provided, Revie runs in **Local Mode** querying databases directly.
-""")
+st.sidebar.header("AI Status")
 
-# Handle API Key
-api_key = st.sidebar.text_input("Gemini API Key", type="password", value=os.environ.get("GEMINI_API_KEY", ""))
+# Handle API Key from Environment
+api_key = os.environ.get("GEMINI_API_KEY", "")
 
 if api_key:
-    st.sidebar.success("🤖 AI Mode Active")
+    st.sidebar.success("🤖 AI Mode Active (Key Loaded)")
 else:
     st.sidebar.info("💾 Local Data Mode Active")
 
@@ -141,7 +138,7 @@ Currently, I am running in **Local Mode** because no Gemini API Key was supplied
 - **Velocity/Movers**: Type "fastest moving products" or "slowest movers"
 - **Feedback/Ratings**: Type "customer ratings"
     
-*Tip: Paste your Gemini API Key in the sidebar to unlock open-ended conversational intelligence!*
+*Tip: Set the GEMINI_API_KEY environment variable to unlock open-ended conversational intelligence!*
 """
 
 # Initialize Chat History
