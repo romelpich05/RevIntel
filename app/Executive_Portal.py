@@ -74,6 +74,7 @@ wasted_promo_spend = tx_filtered[tx_filtered['discount_pct'] > 0]['discount_amou
 # Value of Current Stock
 inv_joined = pd.merge(inv_filtered, products_df, on='product_id', how='left')
 capital_tied = (inv_joined['current_stock'] * inv_joined['cost_price']).sum()
+safety_capital = (inv_joined['safety_stock_level'] * inv_joined['cost_price']).sum()
 
 st.markdown("---")
 
@@ -98,6 +99,8 @@ with col3:
     st.metric(
         "Inventory Capital", 
         f"₱{capital_tied:,.0f}",
+        f"Safety Target: ₱{safety_capital:,.0f}",
+        delta_color="off",
         help="Total cost value of the current physical inventory sitting on shelves and warehouses for the selected branch filter."
     )
 
