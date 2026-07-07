@@ -119,7 +119,7 @@ with row0_col1:
     ).reset_index().sort_values('transaction_date')
     daily_perf['profit'] = daily_perf['revenue'] - daily_perf['cost']
     
-    fig_trend = px.area(
+    fig_trend = px.line(
         daily_perf, 
         x='transaction_date', 
         y=['revenue', 'profit'],
