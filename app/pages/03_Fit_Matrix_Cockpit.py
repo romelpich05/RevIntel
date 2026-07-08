@@ -49,17 +49,8 @@ with tab1:
         help="This tab groups store physical locations into distinct business formats (e.g. Convenience vs Supermarkets) using scikit-learn K-Means clustering, then plots category performance across formats."
     )
     
-    col_param, _ = st.columns([1, 2])
-    with col_param:
-        k_clusters = st.slider(
-            "Configure Store K-Means Clusters", 
-            min_value=2, 
-            max_value=5, 
-            value=3, 
-            step=1, 
-            key="tab1_k_clusters",
-            help="Choose the number of distinct size groupings (k) for the K-Means algorithm to partition store physical sizes."
-        )
+    # Set Store K-Means clusters to 3 (Convenience, Supermarket, Hypermarket)
+    k_clusters = 3
     
     # Store K-Means size clustering
     cluster_features = stores_df[['size_sqm']].copy()
