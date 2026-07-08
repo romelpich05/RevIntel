@@ -26,6 +26,8 @@ tx_prod['discount_amount'] = tx_prod['unit_price'] * tx_prod['quantity'] * tx_pr
 # Pre-calculate cost amounts for financial aggregates
 tx_prod['cost_amount'] = tx_prod['quantity'] * tx_prod['cost_price']
 
+st.sidebar.image("app/logo.png", use_container_width=True)
+st.sidebar.markdown("---")
 st.sidebar.success("✅ Connected to Data Engine")
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Modules**")

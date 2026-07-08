@@ -19,8 +19,9 @@ st.markdown("Maximize margin by simulating price elasticity, retail price hikes,
 with st.spinner("Loading Data..."):
     stores_df, products_df, customers_df, tx_prod, inventory_df, store_reviews_df = load_data()
 
-st.sidebar.success("✅ Connected to Data Engine")
+st.sidebar.image("app/logo.png", use_container_width=True)
 st.sidebar.markdown("---")
+st.sidebar.success("✅ Connected to Data Engine")
 st.sidebar.info("Select filters and adjust pricing parameters directly on the page layout.")
 
 # Move selectors to the top of the main page with tooltips

@@ -64,8 +64,9 @@ X_scaled = scaler.fit_transform(X)
 log_reg = LogisticRegression(max_iter=1000)
 log_reg.fit(X_scaled, y_logistic)
 
-st.sidebar.success("✅ Connected to Data Engine")
+st.sidebar.image("app/logo.png", use_container_width=True)
 st.sidebar.markdown("---")
+st.sidebar.success("✅ Connected to Data Engine")
 st.sidebar.info("Select filters directly on the page layout above.")
 
 # Move selectors to the top of the main page with tooltips

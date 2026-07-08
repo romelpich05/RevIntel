@@ -17,6 +17,8 @@ with st.spinner("Connecting to Data Engine..."):
     stores_df, products_df, customers_df, tx_prod, inventory_df, store_reviews_df = load_data()
 
 # Sidebar Configuration
+st.sidebar.image("app/logo.png", use_container_width=True)
+st.sidebar.markdown("---")
 st.sidebar.header("AI Status")
 
 # Handle API Key from Environment

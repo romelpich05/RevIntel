@@ -24,8 +24,9 @@ median_vel = sales_vel['avg_daily'].median()
 sales_vel['velocity_class'] = sales_vel['avg_daily'].apply(lambda x: 'Fast' if x >= median_vel else 'Slow')
 velocity_map = dict(zip(sales_vel['product_name'], sales_vel['velocity_class']))
 
-st.sidebar.success("✅ Connected to Data Engine")
+st.sidebar.image("app/logo.png", use_container_width=True)
 st.sidebar.markdown("---")
+st.sidebar.success("✅ Connected to Data Engine")
 st.sidebar.info("Adjust the parameters directly on the page layout above.")
 
 # Move sliders to the main page top

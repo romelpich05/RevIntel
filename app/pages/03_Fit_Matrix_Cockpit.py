@@ -35,8 +35,9 @@ def categorize_age(age):
 
 customers_df['age_group'] = customers_df['age'].apply(categorize_age)
 
-st.sidebar.success("✅ Connected to Data Engine")
+st.sidebar.image("app/logo.png", use_container_width=True)
 st.sidebar.markdown("---")
+st.sidebar.success("✅ Connected to Data Engine")
 st.sidebar.info("Select filters directly inside each tab below.")
 
 tab1, tab2, tab3 = st.tabs(["🏪 Store & Product Fit", "👥 Customer & Product Fit", "🗺️ Store & Customer Fit"])
