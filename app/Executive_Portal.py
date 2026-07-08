@@ -33,8 +33,8 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("**Modules**")
 st.sidebar.info("Navigate using the pages above. Adjust filters directly on the Executive Portal dashboard.")
 
-# Branch Selector placed directly at the top of the main page
-col_select, _ = st.columns([1, 1])
+# Branch and Time Horizon Selectors placed side-by-side
+col_select, col_time = st.columns(2)
 with col_select:
     stores_df['display_name'] = stores_df['store_id'] + " - " + stores_df['store_name'] + " (" + stores_df['location_city'] + ")"
     store_map = dict(zip(stores_df['display_name'], stores_df['store_id']))
@@ -44,6 +44,14 @@ with col_select:
         options=store_options, 
         key="main_branch_filter",
         help="Filter all statistics and charts in the Executive Portal for a specific store branch or select 'All Branches' to view aggregates across the entire retail chain."
+    )
+with col_time:
+    selected_time_filter = st.selectbox(
+        "Select Time Horizon Filter",
+        options=["All Time", "Last Year", "Last Month", "Last Week"],
+        index=0,
+        key="main_time_filter",
+        help="Filter all statistics and charts in the Executive Portal for a specific historical time horizon relative to the latest transaction date."
     )
 
 # Map selected store
@@ -60,8 +68,22 @@ else:
     tx_filtered = tx_prod.copy()
     inv_filtered = inventory_df.copy()
 
+# Apply Time Filter relative to dataset maximum date
+tx_filtered['transaction_date'] = pd.to_datetime(tx_filtered['transaction_date'])
+if not tx_filtered.empty:
+    max_date = tx_filtered['transaction_date'].max()
+    if selected_time_filter == "Last Year":
+        start_date = max_date - pd.Timedelta(days=365)
+        tx_filtered = tx_filtered[tx_filtered['transaction_date'] >= start_date].copy()
+    elif selected_time_filter == "Last Month":
+        start_date = max_date - pd.Timedelta(days=30)
+        tx_filtered = tx_filtered[tx_filtered['transaction_date'] >= start_date].copy()
+    elif selected_time_filter == "Last Week":
+        start_date = max_date - pd.Timedelta(days=7)
+        tx_filtered = tx_filtered[tx_filtered['transaction_date'] >= start_date].copy()
+
 if tx_filtered.empty:
-    st.warning(f"No transaction data found for {selected_store_display}.")
+    st.warning(f"No transaction data found for the selected branch/time combination.")
     st.stop()
 
 # --- KPI Calculations ---
